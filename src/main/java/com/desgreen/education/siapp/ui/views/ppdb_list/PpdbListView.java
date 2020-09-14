@@ -88,7 +88,6 @@ public class PpdbListView extends SplitViewFrame {
 	private void init(){
 		model = new PpdbListModel(authUserDetailsService, appPublicService);
 		controller = new PpdbListController(model, this);
-//		model = controller.model;
 
 		listener = controller;
 
@@ -111,7 +110,6 @@ public class PpdbListView extends SplitViewFrame {
 		naviDrawer.setVisible(false);
 
 
-		model.reloadListHeader();
 		setViewContent(createContent());
 		setViewDetails(createDetailsDrawer());
 
@@ -151,55 +149,55 @@ public class PpdbListView extends SplitViewFrame {
 				.setFrozen(true)
 				.setHeader("ID")
 				.setSortable(true);
-		grid.addColumn(new ComponentRenderer<>(this::createStatusBuka))
-				.setAutoWidth(true)
-				.setFlexGrow(0)
-				.setHeader("STATUS")
-				.setTextAlign(ColumnTextAlign.CENTER);
-		grid.addColumn(new ComponentRenderer<>(this::createDetilInfo))
-				.setAutoWidth(true)
-				.setFlexGrow(2)
-				.setHeader("MatPel/Kurikulum")
-				.setComparator(FKurikulum::getDescription)
-				.setSortable(true);
-		grid.addColumn(new ComponentRenderer<>(this::createButtonDaftar))
-				.setAutoWidth(true)
-				.setFlexGrow(0)
-				.setHeader("")
-				.setTextAlign(ColumnTextAlign.CENTER);
-
-		grid.addColumn(new ComponentRenderer<>(this::createPeriode))
-				.setAutoWidth(true)
-				.setFlexGrow(0)
-				.setHeader("Periode")
-				.setTextAlign(ColumnTextAlign.CENTER)
-				.setComparator((o1, o2) -> o1.getFperiodeBean().getDescription().compareTo(o2.getFperiodeBean().getDescription()))
-				.setSortable(true);
-		grid.addColumn(new ComponentRenderer<>(this::createKuotaMale))
-				.setAutoWidth(true)
-				.setFlexGrow(0)
-				.setHeader("Kuota")
-				.setTextAlign(ColumnTextAlign.CENTER)
-				.setComparator(FKurikulum::getKuotaMale)
-				.setSortable(false);
-			grid.addColumn(new ComponentRenderer<>(this::createKuotaFemale))
-				.setAutoWidth(true)
-				.setFlexGrow(0)
-				.setTextAlign(ColumnTextAlign.CENTER)
-				.setComparator(FKurikulum::getKuotaFemale)
-				.setSortable(false);
-		grid.addColumn(new ComponentRenderer<>(this::createCompany))
-				.setAutoWidth(true)
-				.setFlexGrow(2)
-				.setHeader("Sekolah/Pondok")
-				.setTextAlign(ColumnTextAlign.CENTER)
-				.setSortable(true);
-		grid.addColumn(FKurikulum::getNotes)
-				.setAutoWidth(true)
-				.setFlexGrow(2)
-				.setHeader("Catatan")
-				.setTextAlign(ColumnTextAlign.START)
-				.setSortable(false);
+//		grid.addColumn(new ComponentRenderer<>(this::createStatusBuka))
+//				.setAutoWidth(true)
+//				.setFlexGrow(0)
+//				.setHeader("STATUS")
+//				.setTextAlign(ColumnTextAlign.CENTER);
+//		grid.addColumn(new ComponentRenderer<>(this::createDetilInfo))
+//				.setAutoWidth(true)
+//				.setFlexGrow(2)
+//				.setHeader("MatPel/Kurikulum")
+//				.setComparator(FKurikulum::getDescription)
+//				.setSortable(true);
+//		grid.addColumn(new ComponentRenderer<>(this::createButtonDaftar))
+//				.setAutoWidth(true)
+//				.setFlexGrow(0)
+//				.setHeader("")
+//				.setTextAlign(ColumnTextAlign.CENTER);
+//
+//		grid.addColumn(new ComponentRenderer<>(this::createPeriode))
+//				.setAutoWidth(true)
+//				.setFlexGrow(0)
+//				.setHeader("Periode")
+//				.setTextAlign(ColumnTextAlign.CENTER)
+//				.setComparator((o1, o2) -> o1.getFperiodeBean().getDescription().compareTo(o2.getFperiodeBean().getDescription()))
+//				.setSortable(true);
+//		grid.addColumn(new ComponentRenderer<>(this::createKuotaMale))
+//				.setAutoWidth(true)
+//				.setFlexGrow(0)
+//				.setHeader("Kuota")
+//				.setTextAlign(ColumnTextAlign.CENTER)
+//				.setComparator(FKurikulum::getKuotaMale)
+//				.setSortable(false);
+//			grid.addColumn(new ComponentRenderer<>(this::createKuotaFemale))
+//				.setAutoWidth(true)
+//				.setFlexGrow(0)
+//				.setTextAlign(ColumnTextAlign.CENTER)
+//				.setComparator(FKurikulum::getKuotaFemale)
+//				.setSortable(false);
+//		grid.addColumn(new ComponentRenderer<>(this::createCompany))
+//				.setAutoWidth(true)
+//				.setFlexGrow(2)
+//				.setHeader("Sekolah/Pondok")
+//				.setTextAlign(ColumnTextAlign.CENTER)
+//				.setSortable(true);
+//		grid.addColumn(FKurikulum::getNotes)
+//				.setAutoWidth(true)
+//				.setFlexGrow(2)
+//				.setHeader("Catatan")
+//				.setTextAlign(ColumnTextAlign.START)
+//				.setSortable(false);
 
 		return grid;
 	}

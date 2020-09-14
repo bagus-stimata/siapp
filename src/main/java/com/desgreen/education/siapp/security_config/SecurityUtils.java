@@ -2,6 +2,11 @@ package com.desgreen.education.siapp.security_config;
 
 import com.desgreen.education.siapp.security_utils_ui.AccessDeniedView;
 import com.desgreen.education.siapp.security_utils_ui.CustomRouteNotFoundError;
+import com.desgreen.education.siapp.ui.views.Home;
+import com.desgreen.education.siapp.ui.views.ppdb_list.PpdbListView;
+import com.desgreen.education.siapp.ui.views.ppdb_online.PpdbOnlineView;
+import com.desgreen.education.siapp.ui.views.ppdb_selectmatkul.PpdbSelectMatkulView;
+import com.desgreen.education.siapp.ui.views.transaksi_krs.KrsView;
 import com.vaadin.flow.server.HandlerHelper;
 import com.vaadin.flow.shared.ApplicationConstants;
 import org.slf4j.Logger;
@@ -73,11 +78,11 @@ public final class SecurityUtils {
 		final boolean publicView = LoginViewManual.class.equals(securedClass)
 			|| AccessDeniedView.class.equals(securedClass)
 			|| CustomRouteNotFoundError.class.equals(securedClass)
-//			|| PpdbOnlineView.class.equals(securedClass)
-//			|| PpdbListView.class.equals(securedClass)
-//			|| PpdbSelectMatkulView.class.equals(securedClass)
-//			|| KrsView.class.equals(securedClass)
-//			|| Home.class.equals(securedClass)
+			|| PpdbOnlineView.class.equals(securedClass)
+			|| PpdbListView.class.equals(securedClass)
+			|| PpdbSelectMatkulView.class.equals(securedClass)
+			|| KrsView.class.equals(securedClass)
+			|| Home.class.equals(securedClass)
 			;
 
 

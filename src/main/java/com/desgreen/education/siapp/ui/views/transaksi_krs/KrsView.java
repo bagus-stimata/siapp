@@ -114,7 +114,6 @@ public class KrsView extends SplitViewFrame {
 		super.onAttach(attachEvent);
 		initAppBar();
 
-		model.reloadListHeader();
 		setViewContent(createContent());
 		setViewDetails(createDetailsDrawer());
 
@@ -178,11 +177,6 @@ public class KrsView extends SplitViewFrame {
 				.setHeader("MatPel/Kurikulum")
 				.setComparator(FKurikulum::getDescription)
 				.setSortable(true);
-//		grid.addColumn(new ComponentRenderer<>(this::createActive))
-//				.setAutoWidth(true)
-//				.setFlexGrow(0)
-//				.setHeader("Daftar")
-//				.setTextAlign(ColumnTextAlign.END);
 		grid.addColumn(new ComponentRenderer<>(this::createStatusPesetujuan))
 				.setAutoWidth(true)
 				.setFlexGrow(0)
@@ -325,9 +319,6 @@ public class KrsView extends SplitViewFrame {
 
 		return item;
 	}
-//	private Component createCompany(FKurikulum fKurikulum) {
-//		return UIUtils.createBoldLabel(fKurikulum.getFdivisionBean()!=null? fKurikulum.getFdivisionBean().getDescription(): "");
-//	}
 
 	private Component createComboDivisionInfo(FDivision domain) {
 		ListItem item = new ListItem( domain.getDescription(),
@@ -373,13 +364,6 @@ public class KrsView extends SplitViewFrame {
 		item.setPrefix(icon);
 		return item;
 	}
-
-	// private Component createKurikulumDateFrom(FKurikulum fKurikulum) {
-	// 	return new Span(UIUtils.formatDate(fKurikulum.getKurikulumFrom()));
-	// }
-	// private Component createKurikulumDateTo(FKurikulum fKurikulum) {
-	// 	return new Span(UIUtils.formatDate(fKurikulum.getKurikulumTo()));
-	// }
 
 	DetailsDrawerFooter footer = new DetailsDrawerFooter();
 	private DetailsDrawer createDetailsDrawer() {

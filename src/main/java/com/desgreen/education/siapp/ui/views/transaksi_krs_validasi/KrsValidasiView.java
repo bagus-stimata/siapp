@@ -110,7 +110,6 @@ public class KrsValidasiView extends SplitViewFrame {
 		super.onAttach(attachEvent);
 		initAppBar();
 
-		model.reloadListHeader();
 		setViewContent(createContent());
 		setViewDetails(createDetailsDrawer());
 
@@ -277,6 +276,7 @@ public class KrsValidasiView extends SplitViewFrame {
 		}
 		return icon;
 	}
+
 	private Component createAddreses(FtKrs ftKrs) {
 		final FSiswa fSiswa = ftKrs.getFsiswaBean();
 		String address2 = fSiswa.getAddress2();
@@ -366,7 +366,6 @@ public class KrsValidasiView extends SplitViewFrame {
 		return detailsDrawer;
 	}
 
-
 	private void filter() {
 		Tab selectedTab = MainLayout.get().getAppBar().getSelectedTab();
 		if (selectedTab != null) {
@@ -374,7 +373,6 @@ public class KrsValidasiView extends SplitViewFrame {
 			dataProvider.setFilterByValue(p -> String.valueOf(p.getFkurikulumBean().getId()), selectedTab.getId().get());
 		}
 	}
-
 
 	String filterText = "";
 	public void setFilter(String filterText) {
@@ -386,16 +384,16 @@ public class KrsValidasiView extends SplitViewFrame {
 
 		dataProvider.setFilter(domain -> passesFilter(domain.getFsiswaBean()!=null?(domain.getFsiswaBean().getFullName()):"", this.filterText)
 				|| passesFilter(domain.getFsiswaBean()!=null?(domain.getFsiswaBean().isSex()? "Laki": "Perempu"):"", this.filterText)
-//				|| passesFilter(domain.getAddress1(), this.filterText)
 				|| passesFilter(domain.getFsiswaBean()!=null?(domain.getFsiswaBean().getCity()):"", this.filterText));
 
-//		Tab selectedTab = MainLayout.get().getAppBar().getSelectedTab();
-//		if (selectedTab != null) {
-////			System.out.println("Masuk filter: " + selectedTab.getLabel() + " >> " + selectedTab.getId().toString());
-//			dataProvider.addFilterByValue(p -> String.valueOf(p.getFkurikulumBean().getId()), selectedTab.getId().get());
-//		}
+		Tab selectedTab = MainLayout.get().getAppBar().getSelectedTab();
+		if (selectedTab != null) {
+//			System.out.println("Masuk filter: " + selectedTab.getLabel() + " >> " + selectedTab.getId().toString());
+			dataProvider.addFilterByValue(p -> String.valueOf(p.getFkurikulumBean().getId()), selectedTab.getId().get());
+		}
 
 	}
+
 	private boolean passesFilter(Object object, String filterText) {
 		return object != null && object.toString().toLowerCase(Locale.ENGLISH)
 				.contains(filterText);

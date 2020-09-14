@@ -73,7 +73,6 @@ public class KrsModel {
         if (userActive !=null) {
             try {
                 currentFSiswa = fSiswaJPARepository.findById(userActive.getIdSiswa()).get();
-//                System.out.println("KRS: Nama " + currentFSiswa.getId());
 
             } catch (Exception ex) {
             }

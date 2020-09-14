@@ -107,6 +107,7 @@ public class KrsDetailView extends ViewFrame implements HasUrlParameter<Long> {
 		listItemPeriode.setPrimaryText(UIUtils.formatDate_ddMMMYYYY(currentKurikulum.getFperiodeBean().getPeriodeFrom()) + " s.d " +
 				UIUtils.formatDate_ddMMMYYYY(currentKurikulum.getFperiodeBean().getPeriodeTo()) );
 
+		if (currentKurikulum.getAmountBiaya()==null) currentKurikulum.setAmountBiaya(0.0);
 		NumberFormat nf = NumberFormat.getInstance(); nf.setMaximumFractionDigits(0);
 		listItemBiaya.setPrimaryText("Rp. " + nf.format(currentKurikulum.getAmountBiaya()) + ",- " + currentKurikulum.getNotesBiaya());
 

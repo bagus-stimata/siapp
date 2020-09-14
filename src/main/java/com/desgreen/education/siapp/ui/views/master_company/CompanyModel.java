@@ -1,8 +1,8 @@
 package com.desgreen.education.siapp.ui.views.master_company;
 
 import com.desgreen.education.siapp.AppPublicService;
-import com.desgreen.education.siapp.backend.jpa_repository.FCompanyJPARepository;
-import com.desgreen.education.siapp.backend.model.FCompany;
+import com.desgreen.education.siapp.backend.jpa_repository.*;
+import com.desgreen.education.siapp.backend.model.*;
 import com.desgreen.education.siapp.security_config.AuthUserDetailsService;
 import com.desgreen.education.siapp.security_config.SecurityUtils;
 import com.desgreen.education.siapp.security_model.EnumOrganizationLevel;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @UIScope
 @SpringComponent
@@ -70,6 +71,7 @@ public class CompanyModel {
         for (FCompany domain : list) {
             mapHeader.put(domain.getId(), domain);
         }
+
 
     }
 
