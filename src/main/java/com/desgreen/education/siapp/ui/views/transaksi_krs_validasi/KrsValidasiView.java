@@ -44,6 +44,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 
 import javax.annotation.PostConstruct;
+import java.util.Locale;
+import java.util.Objects;
 
 
 @Secured({Role.ADMIN, Role.MNU_VALIDASI_KRS})
@@ -370,10 +372,33 @@ public class KrsValidasiView extends SplitViewFrame {
 		if (selectedTab != null) {
 //			System.out.println("Masuk filter: " + selectedTab.getLabel() + " >> " + selectedTab.getId().toString());
 			dataProvider.setFilterByValue(p -> String.valueOf(p.getFkurikulumBean().getId()), selectedTab.getId().get());
-
 		}
 	}
 
 
+	String filterText = "";
+	public void setFilter(String filterText) {
+		Objects.requireNonNull(filterText, "Filter teks tidak boleh kosong");
+		if (Objects.equals(this.filterText, filterText.trim())) {
+			return;
+		}
+		this.filterText = filterText.trim().toLowerCase(Locale.ENGLISH);
+
+		dataProvider.setFilter(domain -> passesFilter(domain.getFsiswaBean()!=null?(domain.getFsiswaBean().getFullName()):"", this.filterText)
+				|| passesFilter(domain.getFsiswaBean()!=null?(domain.getFsiswaBean().isSex()? "Laki": "Perempu"):"", this.filterText)
+//				|| passesFilter(domain.getAddress1(), this.filterText)
+				|| passesFilter(domain.getFsiswaBean()!=null?(domain.getFsiswaBean().getCity()):"", this.filterText));
+
+//		Tab selectedTab = MainLayout.get().getAppBar().getSelectedTab();
+//		if (selectedTab != null) {
+////			System.out.println("Masuk filter: " + selectedTab.getLabel() + " >> " + selectedTab.getId().toString());
+//			dataProvider.addFilterByValue(p -> String.valueOf(p.getFkurikulumBean().getId()), selectedTab.getId().get());
+//		}
+
+	}
+	private boolean passesFilter(Object object, String filterText) {
+		return object != null && object.toString().toLowerCase(Locale.ENGLISH)
+				.contains(filterText);
+	}
 
 }

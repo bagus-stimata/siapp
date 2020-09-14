@@ -1,4 +1,4 @@
-package com.desgreen.education.siapp.ui.views.ppdb_online_2;
+package com.desgreen.education.siapp.ui.views.ppdb_online;
 
 import com.desgreen.education.siapp.backend.model.*;
 import com.desgreen.education.siapp.security_config.PassEncoding;

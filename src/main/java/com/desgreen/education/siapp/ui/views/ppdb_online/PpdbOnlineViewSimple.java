@@ -1,4 +1,4 @@
-package com.desgreen.education.siapp.ui.views.ppdb_online_2;
+package com.desgreen.education.siapp.ui.views.ppdb_online;
 
 import com.desgreen.education.siapp.backend.model_sample.Person;
 import com.vaadin.flow.component.Component;

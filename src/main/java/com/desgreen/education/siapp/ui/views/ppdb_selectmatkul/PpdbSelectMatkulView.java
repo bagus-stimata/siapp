@@ -20,7 +20,7 @@ import com.desgreen.education.siapp.ui.util.UIUtils;
 import com.desgreen.education.siapp.ui.util.css.BorderRadius;
 import com.desgreen.education.siapp.ui.views.ViewFrame;
 import com.desgreen.education.siapp.ui.views.ppdb_list.PpdbListView;
-import com.desgreen.education.siapp.ui.views.ppdb_online_2.PpdbOnlineView;
+import com.desgreen.education.siapp.ui.views.ppdb_online.PpdbOnlineView;
 import com.desgreen.education.siapp.ui.views.transaksi_krs_detail.KrsDetailView;
 import com.desgreen.education.siapp.ui.utils.common.CommonFileFactory;
 import com.vaadin.flow.component.AttachEvent;

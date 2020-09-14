@@ -1,4 +1,4 @@
-package com.desgreen.education.siapp.ui.views.ppdb_online_2;
+package com.desgreen.education.siapp.ui.views.ppdb_online;
 
 import com.desgreen.education.siapp.AppPublicService;
 import com.desgreen.education.siapp.backend.model.EnumStatSiswa;
@@ -37,7 +37,6 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.radiobutton.RadioGroupVariant;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -52,25 +51,16 @@ import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.internal.MessageDigestUtil;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.Iterator;
 import java.util.Locale;
 
 @UIScope
@@ -593,7 +583,7 @@ public class PpdbOnlineView extends SplitViewFrame implements HasUrlParameter<Lo
 		upload.setAutoUpload(true); //ini bagian penting
 		upload.setSizeFull();
 
-		upload.setMaxFileSize(1500 * 1024);
+		upload.setMaxFileSize(2500 * 1024);
 		upload.setHeight("100px");
 		upload.addSucceededListener(event -> updateImageView(event));
 

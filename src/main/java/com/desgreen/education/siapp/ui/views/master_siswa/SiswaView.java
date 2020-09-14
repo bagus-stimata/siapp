@@ -784,7 +784,8 @@ public class SiswaView extends SplitViewFrame {
 		upload.setAutoUpload(true); //ini bagian penting
 		upload.setSizeFull();
 
-		upload.setMaxFileSize(1500 * 1024);
+//		upload.setMaxFileSize(1500 * 1024);
+		upload.setMaxFileSize(2500 * 1024);
 		upload.setHeight("100px");
 
 		imageOuput = new Image();
@@ -822,6 +823,8 @@ public class SiswaView extends SplitViewFrame {
 		divImage.addComponentAsFirst(imageOuput);
 
 		footer.setEnabled(true);
+
+		System.out.println("Ukuran: " + buffer);
 	}
 
 

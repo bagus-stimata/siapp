@@ -1,4 +1,4 @@
-package com.desgreen.education.siapp.ui.views.ppdb_online_2;
+package com.desgreen.education.siapp.ui.views.ppdb_online;
 
 import com.desgreen.education.siapp.AppPublicService;
 import com.desgreen.education.siapp.backend.jpa_repository.FDivisionJPARepository;

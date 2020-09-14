@@ -18,9 +18,9 @@ public class KrsValidasiController implements KrsValidasiListener {
 
     @Override
     public void valueChangeListenerSearch(HasValue.ValueChangeEvent e) {
-//        if (e !=null) {
-//            view.setFilter(e.getValue().toString());
-//        }
+        if (e !=null) {
+            view.setFilter(e.getValue().toString());
+        }
     }
 
     @Override
