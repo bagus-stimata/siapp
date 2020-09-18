@@ -269,5 +269,7 @@
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.7" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.jexcelapi:jxl:2.6.12" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.14" level="project" />
+    <orderEntry type="library" name="Maven: com.drewnoakes:metadata-extractor:2.7.2" level="project" />
+    <orderEntry type="library" name="Maven: com.adobe.xmp:xmpcore:5.1.2" level="project" />
   </component>
 </module>

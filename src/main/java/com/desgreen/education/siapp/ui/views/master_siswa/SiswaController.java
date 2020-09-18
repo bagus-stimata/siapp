@@ -142,7 +142,7 @@ public class SiswaController implements SiswaListener {
                 if (oldFile.exists()) oldFile.delete();
 
                 //Set Nama Image::
-                model.currentDomain.setImageName("_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle() );
+                model.currentDomain.setImageName("_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle().get() );
             }
 
 //          System.out.println("NAMA IMAGE: " + model.currentDomain.getImageName());

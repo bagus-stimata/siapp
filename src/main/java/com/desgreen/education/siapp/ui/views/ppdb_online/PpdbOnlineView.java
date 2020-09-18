@@ -583,7 +583,7 @@ public class PpdbOnlineView extends SplitViewFrame implements HasUrlParameter<Lo
 		upload.setAutoUpload(true); //ini bagian penting
 		upload.setSizeFull();
 
-		upload.setMaxFileSize(2500 * 1024);
+		upload.setMaxFileSize(4 *1500 * 1024);
 		upload.setHeight("100px");
 		upload.addSucceededListener(event -> updateImageView(event));
 

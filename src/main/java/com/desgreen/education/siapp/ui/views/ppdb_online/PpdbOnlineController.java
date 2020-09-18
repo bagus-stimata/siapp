@@ -97,7 +97,7 @@ public class PpdbOnlineController implements PpdbOnlineListener {
            view.currentSiswa.setEmail(view.email.getValue());
 
             view.currentSiswa.setImageName(view.currentSiswa.getFdivisionBean().getFcompanyBean().getId()
-                    + "_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle() );
+                    + "_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle().get() );
 
             //Save File
             view.currentSiswa = model.fSiswaJPARepository.save(view.currentSiswa);

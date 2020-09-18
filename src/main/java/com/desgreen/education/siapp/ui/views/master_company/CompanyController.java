@@ -4,6 +4,7 @@ import com.desgreen.education.siapp.AppPublicService;
 import com.desgreen.education.siapp.backend.model.FCompany;
 import com.desgreen.education.siapp.ui.util.UIUtils;
 import com.desgreen.education.siapp.ui.utils.common.CommonFileFactory;
+import com.desgreen.education.siapp.ui.utils.common.CommonImageFactory;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -11,11 +12,16 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import org.apache.commons.io.IOUtils;
 import org.claspina.confirmdialog.ButtonOption;
 import org.claspina.confirmdialog.ConfirmDialog;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.IOException;
 
 @SpringComponent
 @UIScope
@@ -126,7 +132,7 @@ public class CompanyController implements CompanyListener{
                 if (oldFile.exists()) oldFile.delete();
 
                 //Set Nama Image::
-                model.currentDomain.setLogoImage("_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle() );
+                model.currentDomain.setLogoImage("_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle().get());
             }
 
             model.currentDomain = model.fCompanyJPARepository.save(model.currentDomain);
@@ -134,7 +140,22 @@ public class CompanyController implements CompanyListener{
 
             //Lakukan Upload Image to Disk
             if ( ! model.currentDomain.getLogoImage().equals("") && view.isImageChange) {
-                CommonFileFactory.writeStreamToFile(view.buffer.getInputStream(), model.currentDomain.getLogoImage());
+//                CommonFileFactory.writeStreamToFile(view.buffer.getInputStream(), model.currentDomain.getLogoImage());
+//                CommonFileFactory.writeStreamToFile(view.imageOuput., model.currentDomain.getLogoImage());
+
+                File targetFile = new File(AppPublicService.FILE_PATH + model.currentDomain.getLogoImage());
+                String extention = CommonFileFactory.getExtensionByStringHandling(model.currentDomain.getLogoImage()).get();
+                try {
+                    BufferedImage buffImage = ImageIO.read(view.buffer.getInputStream());
+//                    buffImage = CommonImageFactory.resizeImageGraphics2D(buffImage, buffImage.getWidth()/2, buffImage.getHeight()/2);
+
+                    RenderedImage renderedImage = (RenderedImage) buffImage;
+                    ImageIO.write((RenderedImage) buffImage,  extention,  targetFile);
+
+                }catch (IOException ex){}
+                try {
+                    ImageIO.write((RenderedImage) CommonImageFactory.autoRotateImage(targetFile), extention, targetFile);
+                }catch (Exception ex){}
             }
 
             if (newDomain) {

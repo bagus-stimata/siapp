@@ -128,7 +128,7 @@ public class UsersController implements UsersListener {
 
                 //Set Nama Image
                 model.currentDomain.setImageName(model.userActive.getFdivisionBean().getFcompanyBean().getId()
-                        + "_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle() );
+                        + "_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle().get() );
             }
 
             if (view.password_manual.getValue() != null) {

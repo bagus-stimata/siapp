@@ -56,10 +56,15 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -361,12 +366,6 @@ public class CompanyView extends SplitViewFrame {
 		 * Re Binding Datata
 		 */
 		binder.bindInstanceFields(this);
-//		binder.forField(city).withConverter(new PriceConverter())
-//				.bind("price");
-//		binder.forField(kode1).bind(FCompany::getKode1, FCompany::setKode1);
-//		binder.forField(radioButtonStatusActive)
-//				.withConverter(new StringToBooleanConverter("", "Active", "Non-Active"))
-//				.bind(FCompany::isStatActive, FCompany::setStatActive);
 		binder.forField(checkStatusActive)
 				.bind(FCompany::isStatActive, FCompany::setStatActive);
 
@@ -465,7 +464,7 @@ public class CompanyView extends SplitViewFrame {
 		upload.setAutoUpload(true); //ini bagian penting
 		upload.setSizeFull();
 
-		upload.setMaxFileSize(1500 * 1024);
+		upload.setMaxFileSize(3 * 1500 * 1024);
 		upload.setHeight("100px");
 
 		imageOuput = new Image();
@@ -474,6 +473,7 @@ public class CompanyView extends SplitViewFrame {
 		}catch (Exception ex){}
 		imageOuput.setMaxHeight("400px");
 		imageOuput.setMaxWidth("300px");
+
 
 		divImage.removeAll();
 		divImage.addComponentAsFirst(imageOuput);
@@ -496,13 +496,22 @@ public class CompanyView extends SplitViewFrame {
 				event.getFileName(), buffer.getInputStream());
 
 		imageOuput = (Image) component;
+		imageOuput.setMaxWidth("200px");
 		imageOuput.setMaxHeight("400px");
-		imageOuput.setMaxWidth("300px");
 
 		divImage.removeAll();
 		divImage.addComponentAsFirst(imageOuput);
 
 		footer.setEnabled(true);
+
+		try {
+			InputStream is = buffer.getInputStream();
+			BufferedImage image = ImageIO.read(is);
+
+			byte[] bytes = IOUtils.toByteArray(is);
+			System.out.println("Available: " + buffer.getInputStream().available());
+			System.out.println("Bytes: " + bytes.length );
+		}catch (Exception ex){}
 	}
 
 	private void filter() {
@@ -529,3 +538,5 @@ public class CompanyView extends SplitViewFrame {
 
 
 }
+
+
