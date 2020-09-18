@@ -12,7 +12,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import org.apache.commons.io.IOUtils;
 import org.claspina.confirmdialog.ButtonOption;
 import org.claspina.confirmdialog.ConfirmDialog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.IOException;
 
 @SpringComponent
 @UIScope
@@ -147,15 +145,16 @@ public class CompanyController implements CompanyListener{
                 String extention = CommonFileFactory.getExtensionByStringHandling(model.currentDomain.getLogoImage()).get();
                 try {
                     BufferedImage buffImage = ImageIO.read(view.buffer.getInputStream());
-//                    buffImage = CommonImageFactory.resizeImageGraphics2D(buffImage, buffImage.getWidth()/2, buffImage.getHeight()/2);
+                    buffImage = CommonImageFactory
+                            .resizeImageGraphics2D(buffImage, buffImage.getWidth()/2, buffImage.getHeight()/2,
+                                    CommonImageFactory.getRotationDegreeRecommended(view.buffer.getInputStream()));
 
                     RenderedImage renderedImage = (RenderedImage) buffImage;
                     ImageIO.write((RenderedImage) buffImage,  extention,  targetFile);
 
-                }catch (IOException ex){}
-                try {
-                    ImageIO.write((RenderedImage) CommonImageFactory.autoRotateImage(targetFile), extention, targetFile);
+
                 }catch (Exception ex){}
+
             }
 
             if (newDomain) {

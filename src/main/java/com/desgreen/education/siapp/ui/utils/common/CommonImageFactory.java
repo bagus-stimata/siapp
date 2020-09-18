@@ -86,13 +86,47 @@ public class CommonImageFactory {
         return outputImage;
     }
 
-    public static BufferedImage resizeImageGraphics2D(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
-        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics2D = resizedImage.createGraphics();
+    public static BufferedImage resizeImageGraphics2D(BufferedImage originalImage, int targetWidth, int targetHeight, double rotationDegree) throws IOException {
+//        AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(45));
+        AffineTransform affineTransform = new AffineTransform();
+        affineTransform.rotate(Math.toRadians(90));
+        AffineTransformOp affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);
+
+        BufferedImage destinationImage = new BufferedImage(originalImage.getHeight(), originalImage.getWidth(), originalImage.getType());
+        destinationImage = affineTransformOp.filter(originalImage, destinationImage);
+
+//        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics2D = destinationImage.createGraphics();
         graphics2D.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
+
         graphics2D.dispose();
-        return resizedImage;
+
+        return destinationImage;
     }
 
+    public static double getRotationDegreeRecommended(InputStream inputStream) {
+        double degree = 0;
+        try {
+            Metadata metadata = ImageMetadataReader.readMetadata(inputStream);
+            ExifIFD0Directory exifIFD0 = metadata.getDirectory(ExifIFD0Directory.class);
+            int orientation = exifIFD0.getInt(ExifIFD0Directory.TAG_ORIENTATION);
+            System.out.println("Oriensasi nya: " + orientation);
+
+//            int orientation =1;
+            switch (orientation) {
+                case 1: // [Exif IFD0] Orientation - Top, left side (Horizontal / normal)
+                    return 0;
+                case 6: // [Exif IFD0] Orientation - Right side, top (Rotate 90 CW)
+                    return 90;
+                case 3: // [Exif IFD0] Orientation - Bottom, right side (Rotate 180)
+                    return 180;
+                case 8: // [Exif IFD0] Orientation - Left side, bottom (Rotate 270 CW)
+                    return 270;
+            }
+
+        }catch (Exception ex) {}
+
+        return degree;
+    }
 
 }
