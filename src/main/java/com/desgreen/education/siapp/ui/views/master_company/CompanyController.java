@@ -146,13 +146,6 @@ public class CompanyController implements CompanyListener{
                 String extention = CommonFileFactory.getExtensionByStringHandling(model.currentDomain.getLogoImage()).get();
                 try {
                     BufferedImage buffImage = ImageIO.read(view.buffer.getInputStream());
-//                    if (CommonImageFactory.getImageRotationSuggestion(view.buffer.getInputStream()).equals(EnumRotate.CW_90)) {
-//                        buffImage = CommonImageFactory.rotateImage_CW90(buffImage);
-//                    }else if (CommonImageFactory.getImageRotationSuggestion(view.buffer.getInputStream()).equals(EnumRotate.CW_180)) {
-//                        buffImage = CommonImageFactory.rotateImage_CW180(buffImage);
-//                    }else if (CommonImageFactory.getImageRotationSuggestion(view.buffer.getInputStream()).equals(EnumRotate.CW_270)) {
-//                        buffImage = CommonImageFactory.rotateImage_CW270(buffImage);
-//                    }
                     buffImage = CommonImageFactory.autoRotateImage(buffImage,
                             CommonImageFactory.getImageRotationSuggestion(view.buffer.getInputStream()));
 
@@ -161,9 +154,8 @@ public class CompanyController implements CompanyListener{
 
                     if (renderedImage !=null) {
                         ImageIO.write( renderedImage,  extention,  targetFile);
-                        System.out.println("Selesai Write");
                     }else {
-                        System.out.println("Null Bos...");
+                        System.out.println("Image Company Null Bos...");
                     }
 
                 }catch (Exception ex){

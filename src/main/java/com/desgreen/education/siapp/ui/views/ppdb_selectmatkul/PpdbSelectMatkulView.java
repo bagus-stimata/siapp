@@ -95,6 +95,7 @@ public class PpdbSelectMatkulView extends ViewFrame implements HasUrlParameter<L
 				UIUtils.formatDate_ddMMMYYYY(currentKurikulum.getFperiodeBean().getPeriodeTo()) );
 		listItemCompany.setPrimaryText(currentKurikulum.getFdivisionBean().getFcompanyBean().getDescription() );
 
+		if (currentKurikulum.getAmountBiaya()==null) currentKurikulum.setAmountBiaya(0.0);
 		NumberFormat nf = NumberFormat.getInstance(); nf.setMaximumFractionDigits(0);
 		listItemBiaya.setPrimaryText("Rp. " + nf.format(currentKurikulum.getAmountBiaya()) + ",- " + currentKurikulum.getNotesBiaya());
 

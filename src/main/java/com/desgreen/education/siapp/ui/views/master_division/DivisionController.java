@@ -4,6 +4,7 @@ import com.desgreen.education.siapp.AppPublicService;
 import com.desgreen.education.siapp.backend.model.FDivision;
 import com.desgreen.education.siapp.ui.util.UIUtils;
 import com.desgreen.education.siapp.ui.utils.common.CommonFileFactory;
+import com.desgreen.education.siapp.ui.utils.common.CommonImageFactory;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -13,6 +14,9 @@ import org.claspina.confirmdialog.ButtonOption;
 import org.claspina.confirmdialog.ConfirmDialog;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
 
 public class DivisionController implements DivisionListener {
@@ -125,7 +129,27 @@ public class DivisionController implements DivisionListener {
 
             //Lakukan Upload Image to Disk
             if ( ! model.currentDomain.getLogoImage().equals("") && view.isImageChange) {
-                CommonFileFactory.writeStreamToFile(view.buffer.getInputStream(), model.currentDomain.getLogoImage());
+//                CommonFileFactory.writeStreamToFile(view.buffer.getInputStream(), model.currentDomain.getLogoImage());
+                File targetFile = new File(AppPublicService.FILE_PATH + model.currentDomain.getLogoImage());
+                String extention = CommonFileFactory.getExtensionByStringHandling(model.currentDomain.getLogoImage()).get();
+                try {
+                    BufferedImage buffImage = ImageIO.read(view.buffer.getInputStream());
+                    buffImage = CommonImageFactory.autoRotateImage(buffImage,
+                            CommonImageFactory.getImageRotationSuggestion(view.buffer.getInputStream()));
+
+                    buffImage = CommonImageFactory.resizeImageGraphics2D_MaxWidth(buffImage, 1028);
+                    RenderedImage renderedImage = (RenderedImage) buffImage;
+
+                    if (renderedImage !=null) {
+                        ImageIO.write( renderedImage,  extention,  targetFile);
+                    }else {
+                        System.out.println("Image Division Null Bos...");
+                    }
+
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+
             }
 
             if (newDomain) {

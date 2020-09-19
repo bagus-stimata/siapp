@@ -516,7 +516,6 @@ public class CompanyView extends SplitViewFrame {
 					CommonImageFactory.getImageRotationSuggestion(buffer.getInputStream()));
 			newHeight = CommonImageFactory.getMaxScaleHeight(buffImage, newWidth);
 		}catch (Exception ex){}
-
 		imageOuput = (Image) component;
 		imageOuput.setWidth(newWidth, Unit.PIXELS);
 		imageOuput.setHeight(newHeight, Unit.PIXELS);

@@ -21,12 +21,14 @@ import com.desgreen.education.siapp.ui.layout.size.Vertical;
 import com.desgreen.education.siapp.ui.util.LumoStyles;
 import com.desgreen.education.siapp.ui.util.UIUtils;
 import com.desgreen.education.siapp.ui.util.css.BoxSizing;
+import com.desgreen.education.siapp.ui.utils.common.CommonImageFactory;
 import com.desgreen.education.siapp.ui.views.SplitViewFrame;
 import com.desgreen.education.siapp.ui.utils.common.CommonDateFormat;
 import com.desgreen.education.siapp.ui.utils.common.CommonFileFactory;
 import com.vaadin.componentfactory.ToggleButton;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -70,6 +72,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -785,15 +789,23 @@ public class SiswaView extends SplitViewFrame {
 		upload.setSizeFull();
 
 //		upload.setMaxFileSize(1500 * 1024);
-		upload.setMaxFileSize(2500 * 1024);
+		upload.setMaxFileSize(3 * 1500 * 1024);
 		upload.setHeight("100px");
 
 		imageOuput = new Image();
 		try {
 			imageOuput = CommonFileFactory.generateImage(AppPublicService.FILE_PATH + model.currentDomain.getImageName());
 		}catch (Exception ex){}
-		imageOuput.setMaxHeight("400px");
-		imageOuput.setMaxWidth("300px");
+		int newWidth = 300;
+		int newHeight = 400;
+		try {
+			BufferedImage buffImage = ImageIO.read(buffer.getInputStream());
+			buffImage = CommonImageFactory.autoRotateImage(buffImage,
+					CommonImageFactory.getImageRotationSuggestion(buffer.getInputStream()));
+			newHeight = CommonImageFactory.getMaxScaleHeight(buffImage, newWidth);
+		}catch (Exception ex){}
+		imageOuput.setWidth(newWidth, Unit.PIXELS);
+		imageOuput.setHeight(newHeight, Unit.PIXELS);
 
 		divImage.removeAll();
 		divImage.addComponentAsFirst(imageOuput);
@@ -815,16 +827,26 @@ public class SiswaView extends SplitViewFrame {
 		Component component = UIUtils.createComponentFromFile(event.getMIMEType(),
 				event.getFileName(), buffer.getInputStream());
 
+		int newWidth = 300;
+		int newHeight = 400;
+		try {
+			BufferedImage buffImage = ImageIO.read(buffer.getInputStream());
+			buffImage = CommonImageFactory.autoRotateImage(buffImage,
+					CommonImageFactory.getImageRotationSuggestion(buffer.getInputStream()));
+			newHeight = CommonImageFactory.getMaxScaleHeight(buffImage, newWidth);
+		}catch (Exception ex){}
+
 		imageOuput = (Image) component;
-		imageOuput.setMaxHeight("400px");
-		imageOuput.setMaxWidth("300px");
+		imageOuput.setWidth(newWidth, Unit.PIXELS);
+		imageOuput.setHeight(newHeight, Unit.PIXELS);
+
 
 		divImage.removeAll();
 		divImage.addComponentAsFirst(imageOuput);
 
 		footer.setEnabled(true);
 
-		System.out.println("Ukuran: " + buffer);
+//		System.out.println("Ukuran: " + buffer);
 	}
 
 
