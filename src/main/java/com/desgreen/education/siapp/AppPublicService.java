@@ -29,7 +29,6 @@ public class AppPublicService implements Serializable {
 	@Autowired
 	public UserRolesJPARepository userRolesJPARepository;
 
-//	@Autowired //Ora kenek di auto wire yo
 	@Autowired
 	public EmailService emailService;
 
@@ -68,7 +67,7 @@ public class AppPublicService implements Serializable {
 
 	public static final String FILE_PATH= System.getProperty("user.home") + "/AppSourceCode/siapp_file/";
 
-	public static final String PUBLIC_HOST_EMAIL = "ppdi@ponpesdahlanikhsan.com";
+	public static final String PUBLIC_HOST_EMAIL = "ponpesldii@ponpesdahlanikhsan.com";
 
 	private AppPublicService() {
 		// Static methods and fields only

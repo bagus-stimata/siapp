@@ -142,13 +142,25 @@
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>2.3.0.RELEASE</version>
         </dependency>
+       <dependency>
+            <groupId>com.github.java-json-tools</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>2.2.8</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.mail</groupId>
+                    <artifactId>mailapi</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
 
-        <!-- Vaadin Data Utils -->
-<!--        <dependency>-->
-<!--            <groupId>org.vaadin.artur</groupId>-->
-<!--            <artifactId>a-vaadin-helper</artifactId>-->
-<!--            <version>1.1.0</version>-->
-<!--        </dependency>-->
+        <!-- Embuh Mail Pokoke Akeh -->
+
         <dependency>
             <groupId>org.vaadin.artur.exampledata</groupId>
             <artifactId>exampledata</artifactId>
