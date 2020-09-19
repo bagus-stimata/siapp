@@ -1,6 +1,7 @@
 package com.desgreen.education.siapp.ui.views.master_company;
 
 import com.desgreen.education.siapp.AppPublicService;
+import com.desgreen.education.siapp.backend.model.EnumRotate;
 import com.desgreen.education.siapp.backend.model.FCompany;
 import com.desgreen.education.siapp.ui.util.UIUtils;
 import com.desgreen.education.siapp.ui.utils.common.CommonFileFactory;
@@ -137,7 +138,7 @@ public class CompanyController implements CompanyListener{
             model.mapHeader.put(model.currentDomain.getId(), model.currentDomain);
 
             //Lakukan Upload Image to Disk
-            if ( ! model.currentDomain.getLogoImage().equals("") && view.isImageChange) {
+            if ( ! model.currentDomain.getLogoImage().equals("") && view.isImageChange && view.buffer.getInputStream() !=null) {
 //                CommonFileFactory.writeStreamToFile(view.buffer.getInputStream(), model.currentDomain.getLogoImage());
 //                CommonFileFactory.writeStreamToFile(view.imageOuput., model.currentDomain.getLogoImage());
 
@@ -145,15 +146,29 @@ public class CompanyController implements CompanyListener{
                 String extention = CommonFileFactory.getExtensionByStringHandling(model.currentDomain.getLogoImage()).get();
                 try {
                     BufferedImage buffImage = ImageIO.read(view.buffer.getInputStream());
-                    buffImage = CommonImageFactory
-                            .resizeImageGraphics2D(buffImage, buffImage.getWidth()/2, buffImage.getHeight()/2,
-                                    CommonImageFactory.getRotationDegreeRecommended(view.buffer.getInputStream()));
+//                    if (CommonImageFactory.getImageRotationSuggestion(view.buffer.getInputStream()).equals(EnumRotate.CW_90)) {
+//                        buffImage = CommonImageFactory.rotateImage_CW90(buffImage);
+//                    }else if (CommonImageFactory.getImageRotationSuggestion(view.buffer.getInputStream()).equals(EnumRotate.CW_180)) {
+//                        buffImage = CommonImageFactory.rotateImage_CW180(buffImage);
+//                    }else if (CommonImageFactory.getImageRotationSuggestion(view.buffer.getInputStream()).equals(EnumRotate.CW_270)) {
+//                        buffImage = CommonImageFactory.rotateImage_CW270(buffImage);
+//                    }
+                    buffImage = CommonImageFactory.autoRotateImage(buffImage,
+                            CommonImageFactory.getImageRotationSuggestion(view.buffer.getInputStream()));
 
+                    buffImage = CommonImageFactory.resizeImageGraphics2D_MaxWidth(buffImage, 1028);
                     RenderedImage renderedImage = (RenderedImage) buffImage;
-                    ImageIO.write((RenderedImage) buffImage,  extention,  targetFile);
 
+                    if (renderedImage !=null) {
+                        ImageIO.write( renderedImage,  extention,  targetFile);
+                        System.out.println("Selesai Write");
+                    }else {
+                        System.out.println("Null Bos...");
+                    }
 
-                }catch (Exception ex){}
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
 
             }
 

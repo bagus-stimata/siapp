@@ -18,12 +18,15 @@ import com.desgreen.education.siapp.ui.layout.size.Top;
 import com.desgreen.education.siapp.ui.layout.size.Vertical;
 import com.desgreen.education.siapp.ui.util.LumoStyles;
 import com.desgreen.education.siapp.ui.util.UIUtils;
+import com.desgreen.education.siapp.ui.util.css.BorderRadius;
 import com.desgreen.education.siapp.ui.util.css.BoxSizing;
+import com.desgreen.education.siapp.ui.utils.common.CommonImageFactory;
 import com.desgreen.education.siapp.ui.views.SplitViewFrame;
 import com.desgreen.education.siapp.ui.utils.common.CommonDateFormat;
 import com.desgreen.education.siapp.ui.utils.common.CommonFileFactory;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -471,8 +474,18 @@ public class CompanyView extends SplitViewFrame {
 		try {
 			imageOuput = CommonFileFactory.generateImage(AppPublicService.FILE_PATH + model.currentDomain.getLogoImage());
 		}catch (Exception ex){}
-		imageOuput.setMaxHeight("400px");
-		imageOuput.setMaxWidth("300px");
+//		imageOuput.setMaxHeight("400px");
+//		imageOuput.setMaxWidth("300px");
+		int newWidth = 300;
+		int newHeight = 400;
+		try {
+			BufferedImage buffImage = ImageIO.read(buffer.getInputStream());
+			buffImage = CommonImageFactory.autoRotateImage(buffImage,
+					CommonImageFactory.getImageRotationSuggestion(buffer.getInputStream()));
+			newHeight = CommonImageFactory.getMaxScaleHeight(buffImage, newWidth);
+		}catch (Exception ex){}
+		imageOuput.setWidth(newWidth, Unit.PIXELS);
+		imageOuput.setHeight(newHeight, Unit.PIXELS);
 
 
 		divImage.removeAll();
@@ -495,23 +508,33 @@ public class CompanyView extends SplitViewFrame {
 		Component component = UIUtils.createComponentFromFile(event.getMIMEType(),
 				event.getFileName(), buffer.getInputStream());
 
+		int newWidth = 300;
+		int newHeight = 400;
+		try {
+			BufferedImage buffImage = ImageIO.read(buffer.getInputStream());
+			buffImage = CommonImageFactory.autoRotateImage(buffImage,
+					CommonImageFactory.getImageRotationSuggestion(buffer.getInputStream()));
+			newHeight = CommonImageFactory.getMaxScaleHeight(buffImage, newWidth);
+		}catch (Exception ex){}
+
 		imageOuput = (Image) component;
-		imageOuput.setMaxWidth("200px");
-		imageOuput.setMaxHeight("400px");
+		imageOuput.setWidth(newWidth, Unit.PIXELS);
+		imageOuput.setHeight(newHeight, Unit.PIXELS);
 
 		divImage.removeAll();
 		divImage.addComponentAsFirst(imageOuput);
 
 		footer.setEnabled(true);
 
-		try {
-			InputStream is = buffer.getInputStream();
-			BufferedImage image = ImageIO.read(is);
+//		try {
+//			InputStream is = buffer.getInputStream();
+//			BufferedImage image = ImageIO.read(is);
+//
+//			byte[] bytes = IOUtils.toByteArray(is);
+//			System.out.println("Available: " + buffer.getInputStream().available());
+//			System.out.println("Bytes: " + bytes.length );
+//		}catch (Exception ex){}
 
-			byte[] bytes = IOUtils.toByteArray(is);
-			System.out.println("Available: " + buffer.getInputStream().available());
-			System.out.println("Bytes: " + bytes.length );
-		}catch (Exception ex){}
 	}
 
 	private void filter() {

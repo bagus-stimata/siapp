@@ -1,10 +1,12 @@
 package com.desgreen.education.siapp.ui.views.ppdb_online;
 
+import com.desgreen.education.siapp.AppPublicService;
 import com.desgreen.education.siapp.backend.model.*;
 import com.desgreen.education.siapp.security_config.PassEncoding;
 import com.desgreen.education.siapp.security_model.EnumOrganizationLevel;
 import com.desgreen.education.siapp.ui.util.UIUtils;
 import com.desgreen.education.siapp.ui.utils.common.CommonFileFactory;
+import com.desgreen.education.siapp.ui.utils.common.CommonImageFactory;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
@@ -14,6 +16,10 @@ import org.claspina.confirmdialog.ButtonOption;
 import org.claspina.confirmdialog.ConfirmDialog;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
 import java.time.LocalDate;
 
 public class PpdbOnlineController implements PpdbOnlineListener {
@@ -106,7 +112,26 @@ public class PpdbOnlineController implements PpdbOnlineListener {
 
             //Lakukan Upload Image to Disk
             if ( ! view.currentSiswa.getImageName().equals("") && view.isImageChange) {
-                CommonFileFactory.writeStreamToFile(view.buffer.getInputStream(), view.currentSiswa.getImageName());
+//                CommonFileFactory.writeStreamToFile(view.buffer.getInputStream(), view.currentSiswa.getImageName());
+
+                File targetFile = new File(AppPublicService.FILE_PATH + view.currentSiswa.getImageName());
+                String extention = CommonFileFactory.getExtensionByStringHandling(view.currentSiswa.getImageName()).get();
+                try {
+                    BufferedImage buffImage = ImageIO.read(view.buffer.getInputStream());
+                    buffImage = CommonImageFactory.autoRotateImage(buffImage,
+                            CommonImageFactory.getImageRotationSuggestion(view.buffer.getInputStream()));
+
+                    buffImage = CommonImageFactory.resizeImageGraphics2D_MaxWidth(buffImage, 1028);
+                    RenderedImage renderedImage = (RenderedImage) buffImage;
+
+                    if (renderedImage !=null) {
+                        ImageIO.write( renderedImage,  extention,  targetFile);
+                    }
+
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+
             }
 
 //            //Lakukan File  Upload
