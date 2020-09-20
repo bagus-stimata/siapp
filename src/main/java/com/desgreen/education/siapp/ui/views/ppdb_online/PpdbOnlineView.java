@@ -18,6 +18,7 @@ import com.desgreen.education.siapp.ui.layout.size.*;
 import com.desgreen.education.siapp.ui.util.BoxShadowBorders;
 import com.desgreen.education.siapp.ui.util.LumoStyles;
 import com.desgreen.education.siapp.ui.util.UIUtils;
+import com.desgreen.education.siapp.ui.views.Home;
 import com.desgreen.education.siapp.ui.views.SplitViewFrame;
 import com.desgreen.education.siapp.ui.utils.common.CommonFileFactory;
 import com.vaadin.componentfactory.ToggleButton;
@@ -248,9 +249,12 @@ public class PpdbOnlineView extends SplitViewFrame implements HasUrlParameter<Lo
 		 * Khusus Binder User
 		 */
 		binderUser.forField(username).asRequired("tidak boleh kosong")
+				.withValidator(new EmailValidator("contoh. masjohn@gmail.com"))
+				.withValidator(value -> isEmailValid(value), "Email sudah terpakai. Gunakan email lain..!!")
 				.bind(FUser::getUsername, FUser::setUsername);
-		binderUser.forField(email).withValidator(new EmailValidator("contoh. masjohn@gmail.com"))
-				.bind(FUser::getEmail, FUser::setEmail);
+//		binderUser.forField(email)
+//				.withValidator(new EmailValidator("contoh. masjohn@gmail.com"))
+//				.bind(FUser::getEmail, FUser::setEmail);
 		binderUser.forField(password).asRequired("tidak boleh kosong")
 				.bind(FUser::getPassword, FUser::setPassword);
 
@@ -320,7 +324,9 @@ public class PpdbOnlineView extends SplitViewFrame implements HasUrlParameter<Lo
 		binder.forField(comboStatSiswa)
 				.bind(FSiswa::getStatSiswa, FSiswa::setStatSiswa);
 	}
-
+	private boolean isEmailValid(String emailValue){
+		return ! model.isCekEmailAda(emailValue);
+	}
 	private Component createDetails_Header(String strTitle) {
 		Label title = UIUtils.createH3Label(strTitle);
 		FlexBoxLayout header = new FlexBoxLayout(title);
@@ -358,7 +364,7 @@ public class PpdbOnlineView extends SplitViewFrame implements HasUrlParameter<Lo
 		return content;
 	}
 
-	private final TextField username = new TextField();
+	protected final TextField username = new TextField();
 	protected final TextField email = new TextField();
 	private final PasswordField password = new PasswordField();
 	private FlexBoxLayout createDetails0() {
@@ -367,17 +373,37 @@ public class PpdbOnlineView extends SplitViewFrame implements HasUrlParameter<Lo
 		form.addClassNames(LumoStyles.Padding.Bottom.L,
 				LumoStyles.Padding.Horizontal.L, LumoStyles.Padding.Top.S);
 
-		form.addFormItem(username, "Nama User");
-		form.addFormItem(email, "email");
-		form.addFormItem(password, "Password");
+//		form.addClassNames(LumoStyles.Padding.Bottom.L,
+//				LumoStyles.Padding.Horizontal.L, LumoStyles.Padding.Top.S);
+//		form.setResponsiveSteps(
+//				new FormLayout.ResponsiveStep("0", 1,
+//						FormLayout.ResponsiveStep.LabelsPosition.ASIDE),
+//				new FormLayout.ResponsiveStep("21em", 1,
+//						FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
+		form.setResponsiveSteps(
+				new FormLayout.ResponsiveStep("21em", 1,
+						FormLayout.ResponsiveStep.LabelsPosition.ASIDE));
 
-		username.setWidth("170px");
-		email.setWidth("170px");
-		password.setWidth("170px");
+//		form.addFormItem(username, "Email Aktif"); //Kita hanya akan menggunakan email
+////		form.addFormItem(email, "email"); //User Name adalah email
+//		form.addFormItem(password, "Password");
+		FormLayout.FormItem comboUsername = form.addFormItem(username, "Email Aktif");
+		FormLayout.FormItem comboPassword = form.addFormItem(password, "Password");
 
-		username.setValueChangeMode(ValueChangeMode.EAGER);
-		email.setValueChangeMode(ValueChangeMode.EAGER);
-		password.setValueChangeMode(ValueChangeMode.EAGER);
+		username.addBlurListener(e -> {
+			binderUser.validate();
+		});
+
+		username.setWidth("220px");
+		email.setWidth("220px");
+		password.setWidth("200px");
+
+		/**
+		 * dilakukan validate manual saat on blur username
+		 */
+//		username.setValueChangeMode(ValueChangeMode.EAGER);
+//		email.setValueChangeMode(ValueChangeMode.EAGER);
+//		password.setValueChangeMode(ValueChangeMode.EAGER);
 
 		FlexBoxLayout content = new FlexBoxLayout(form);
 		content.addClassName(BoxShadowBorders.BOTTOM);
@@ -385,6 +411,8 @@ public class PpdbOnlineView extends SplitViewFrame implements HasUrlParameter<Lo
 		content.setFlexWrap(FlexLayout.FlexWrap.WRAP);
 		content.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 		content.setPadding(Bottom.L);
+
+//		UIUtils.setColSpan(2, username, password); //2 Kolom dijadikan satu
 
 		return content;
 	}
@@ -626,6 +654,10 @@ public class PpdbOnlineView extends SplitViewFrame implements HasUrlParameter<Lo
 		divImage.addComponentAsFirst(imageOuput);
 
 //		footer.setEnabled(true);
+	}
+
+	protected void navigateToSuccessPage(){
+		appBar.getContextIcon().addClickListener(e -> UI.getCurrent().navigate(Home.class));
 	}
 
 }

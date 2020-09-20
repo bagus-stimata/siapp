@@ -100,7 +100,8 @@ public class PpdbOnlineController implements PpdbOnlineListener {
              * 1. Tambah Calon Siswa
              */
             view.currentSiswa.setStatSiswa(EnumStatSiswa.PPDB);
-           view.currentSiswa.setEmail(view.email.getValue());
+//            view.currentSiswa.setEmail(view.email.getValue());
+           view.currentSiswa.setEmail(view.username.getValue());
 
             view.currentSiswa.setImageName(view.currentSiswa.getFdivisionBean().getFcompanyBean().getId()
                     + "_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle().get() );
@@ -155,6 +156,7 @@ public class PpdbOnlineController implements PpdbOnlineListener {
                 view.currentUser.setFdivisionBean(view.currentSiswa.getFdivisionBean());
             }
             try {
+                view.currentUser.setEmail(view.currentUser.getUsername()); //Username harus email. jadi disamakan
                 view.currentUser = model.usersJPARepository.save(view.currentUser);
 
             }catch (Exception ex){
@@ -185,6 +187,9 @@ public class PpdbOnlineController implements PpdbOnlineListener {
             view.btnSubmit.setEnabled(false);
             view.btnSubmit.setText("Pendaftaran Sukses");
             view.btnSubmit.setIcon(new Icon(VaadinIcon.THUMBS_UP));
+
+
+            view.navigateToSuccessPage();
 
         }else {
             UIUtils.showNotification("Masih terdapat isian data yang belum lengkap!!");

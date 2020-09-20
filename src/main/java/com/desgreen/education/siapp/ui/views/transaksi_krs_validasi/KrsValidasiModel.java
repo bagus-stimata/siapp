@@ -67,13 +67,11 @@ public class KrsValidasiModel {
     }
 
     protected void initVariableData(){
+        reloadListHeaderParent();
         reloadListHeader();
     }
 
-    protected void reloadListHeader(){
-
-        List<FtKrs> list = new ArrayList<>();
-
+    protected void reloadListHeaderParent(){
         if (userActive !=null) {
             if (userActive.getOrganizationLevel().equals(EnumOrganizationLevel.DIV)) {
                 listFDivision = new ArrayList<FDivision>(appPublicService.mapDivisions.values().stream()
@@ -81,8 +79,6 @@ public class KrsValidasiModel {
 
                 listFPeriode = new ArrayList<>(fPeriodeJPARepository.findAllByParent(userActive.getFdivisionBean()).stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList()));
                 listFMatPel = new ArrayList<>(fMatPelJPARepository.findAllByParent(userActive.getFdivisionBean()).stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList()));
-
-                list = new ArrayList<>(ftKrsJPARepository.findAllByDivision(userActive.getFdivisionBean()));
 
             } else if (userActive.getOrganizationLevel().equals(EnumOrganizationLevel.CORP)) {
                 listFDivision = new ArrayList<FDivision>(appPublicService.mapDivisions.values().stream()
@@ -93,14 +89,30 @@ public class KrsValidasiModel {
                 listFMatPel = new ArrayList<>(fMatPelJPARepository
                         .findAllByParent(userActive.getFdivisionBean().getFcompanyBean().getFdivisionSet()).stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList()));
 
-                list = new ArrayList<>(ftKrsJPARepository.findAllByDivision(userActive.getFdivisionBean().getFcompanyBean().getFdivisionSet()));
-
             } else {
                 listFDivision = new ArrayList<>(appPublicService.mapDivisions.values().stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList()));
 
                 listFPeriode = new ArrayList<>(fPeriodeJPARepository.findAll()).stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList());
                 listFMatPel = new ArrayList<>(fMatPelJPARepository.findAll()).stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList());
 
+            }
+
+        }
+
+    }
+    protected void reloadListHeader(){
+
+        List<FtKrs> list = new ArrayList<>();
+
+
+        if (userActive !=null) {
+            if (userActive.getOrganizationLevel().equals(EnumOrganizationLevel.DIV)) {
+                list = new ArrayList<>(ftKrsJPARepository.findAllByDivision(userActive.getFdivisionBean()));
+
+            } else if (userActive.getOrganizationLevel().equals(EnumOrganizationLevel.CORP)) {
+                list = new ArrayList<>(ftKrsJPARepository.findAllByDivision(userActive.getFdivisionBean().getFcompanyBean().getFdivisionSet()));
+
+            } else {
                 list = new ArrayList<>(ftKrsJPARepository.findAll());
             }
 
@@ -111,6 +123,8 @@ public class KrsValidasiModel {
         }
 
     }
+
+
 
 
 }

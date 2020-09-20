@@ -24,8 +24,8 @@ public class EmailService {
 
     public EmailService(){
         try {
-            javaMailSender.setUsername("helpdesk1@des-green.com");
-//            javaMailSender.setUsername("ppdi@ponpesdahlanikhsan.com");
+//            javaMailSender.setUsername("helpdesk1@des-green.com");
+            javaMailSender.setUsername("ponpesldii@ponpesdahlanikhsan.com");
             javaMailSender.setPassword("Welcome123456789");
 
             Properties properties = new Properties();
@@ -40,14 +40,15 @@ public class EmailService {
 //			properties.put("mail.smtp.starttls.enable", "true");
 
             javaMailSender.setJavaMailProperties(properties);
-            javaMailSender.setHost("mail.des-green.com");
-//            javaMailSender.setHost("mail.ponpesdahlanikhsan.com");
+//            javaMailSender.setHost("mail.des-green.com");
+            javaMailSender.setHost("mail.ponpesdahlanikhsan.com");
             javaMailSender.setPort(465);
 //		    mailSender.setPort(587); //Not SSL
         }catch (Exception ex) {}
 
     }
 
+    @Async
     public void sendSimpleMessage(String to, String subject, String textMesage) {
 
       
@@ -64,6 +65,7 @@ public class EmailService {
 
     }
 
+    @Async
     public void sendSimpleHtmlMessage(String to, String subject, String htmlContent){
         MimeMessage mimeMessage = this.mailSender.createMimeMessage();
         MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
@@ -81,6 +83,7 @@ public class EmailService {
 
 
 
+    @Async
     public void sendSimpleMessageManual(String to, String subject, String textMesage) throws Exception {
 
 
@@ -92,12 +95,11 @@ public class EmailService {
         msg.setTo(to);
         msg.setSubject(subject);
 
-        msg.setText("Hello World \n Spring Boot Email Boss");
-//        msg.setText(textMesage);
+//        msg.setText("Hello World \n Spring Boot Email Boss");
+        msg.setText(textMesage);
 
         javaMailSender.send(msg);
 
-        System.out.println("Email bos: " + msg.getFrom() + " >> " + msg.getSubject() + " >> " + msg.getTo());
 
     }
 

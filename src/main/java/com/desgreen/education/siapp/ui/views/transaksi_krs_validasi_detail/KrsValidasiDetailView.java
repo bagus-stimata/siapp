@@ -146,13 +146,13 @@ public class KrsValidasiDetailView extends ViewFrame implements HasUrlParameter<
 	private AppBar initAppBar() {
 		AppBar appBar = MainLayout.get().getAppBar();
 		appBar.setNaviMode(AppBar.NaviMode.CONTEXTUAL);
-		appBar.getContextIcon().addClickListener(e -> UI.getCurrent().navigate(KrsValidasiView.class));
+		appBar.getContextIcon().addClickListener(e -> UI.getCurrent().navigate(KrsValidasiView.class, model.currentDomain.getId()));
 		appBar.setTitle(model.currentDomain.getFkurikulumBean().getDescription() + " | " + model.currentDomain.getFsiswaBean().getFullName());
 		return appBar;
 	}
 
 	protected void goToParentView_ToRefresh(){
-		UI.getCurrent().navigate(KrsValidasiView.class);
+		UI.getCurrent().navigate(KrsValidasiView.class, model.currentDomain.getId());
 	}
 
 

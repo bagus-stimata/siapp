@@ -15,6 +15,7 @@ import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.unit.DataSize;
 
@@ -29,6 +30,7 @@ import javax.servlet.MultipartConfigElement;
 @EnableJpaRepositories(basePackageClasses = { UsersJPARepository.class, FCompanyJPARepository.class,
         FDivisionJPARepository.class})
 @EntityScan(basePackageClasses = { FUser.class, FCompany.class, FDivision.class })
+@EnableAsync //untuk asyn email
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

@@ -62,7 +62,18 @@ public class PpdbOnlineModel {
         for (FSiswa domain: fSiswaJPARepository.findAll()) {
             mapHeader.put(domain.getId(), domain);
         }
-
+    }
+    protected boolean isCekEmailAda(String emailValue){
+//        System.out.println("Isine Email " + emailValue);
+//        for (FUser user: usersJPARepository.findAllByEmail(emailValue.trim())) {
+//            System.out.println("adanya " + user.getEmail());
+//        }
+        FUser fUser = usersJPARepository.findAllByTheEmail(emailValue).orElse(new FUser());
+        if (fUser.getId()>0) {
+            return true;
+        }else {
+            return false;
+        }
     }
 
 }

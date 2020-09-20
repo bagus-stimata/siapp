@@ -249,6 +249,14 @@ public class AppBar extends FlexBoxLayout {
 	public Tab getSelectedTab() {
 		return tabs.getSelectedTab();
 	}
+	public Tab getTab(String tabId) {
+		Tab tabSelected = null;
+		for (int i=0; i < tabs.getComponentCount() ; i++) {
+			tabSelected = (Tab) tabs.getComponentAt(i);
+			if (tabSelected.getId().get().equals(tabId)) break;
+		}
+		return tabSelected;
+	}
 
 	public void setSelectedTab(Tab selectedTab) {
 		tabs.setSelectedTab(selectedTab);
@@ -357,4 +365,7 @@ public class AppBar extends FlexBoxLayout {
 
 	}
 
+	public NaviTabs getTabs() {
+		return tabs;
+	}
 }

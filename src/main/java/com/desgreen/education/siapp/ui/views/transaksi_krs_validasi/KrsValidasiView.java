@@ -12,6 +12,7 @@ import com.desgreen.education.siapp.ui.components.detailsdrawer.DetailsDrawer;
 import com.desgreen.education.siapp.ui.components.detailsdrawer.DetailsDrawerFooter;
 import com.desgreen.education.siapp.ui.components.detailsdrawer.DetailsDrawerHeader;
 import com.desgreen.education.siapp.ui.components.navigation.bar.AppBar;
+import com.desgreen.education.siapp.ui.components.navigation.tab.NaviTab;
 import com.desgreen.education.siapp.ui.layout.size.Horizontal;
 import com.desgreen.education.siapp.ui.layout.size.Right;
 import com.desgreen.education.siapp.ui.layout.size.Top;
@@ -31,21 +32,23 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Secured({Role.ADMIN, Role.MNU_VALIDASI_KRS})
@@ -53,7 +56,7 @@ import java.util.Objects;
 @SpringComponent
 @Route(value = "KrsValidasiView", layout = MainLayout.class)
 @PageTitle("KrsValidasiView")
-public class KrsValidasiView extends SplitViewFrame {
+public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<Long> {
 
 	protected KrsValidasiModel model;
 	protected KrsValidasiController controller;
@@ -102,13 +105,61 @@ public class KrsValidasiView extends SplitViewFrame {
 
 //		detailsDrawer.setContent(createDetails());
 
+		System.out.println("Lewat 2");
+
+
+	}
+
+
+	@Override
+	public void setParameter(BeforeEvent beforeEvent, @OptionalParameter  Long paramId) {
+		if (paramId !=null) {
+			FtKrs ftKrs = model.ftKrsJPARepository.findById(paramId).orElse(new FtKrs());
+//			model.reloadListHeader(); //Jika dari ValidasiDetail >> maka harus Refresh
+			if (ftKrs.getId()>0) {
+				selectedTabId = String.valueOf(ftKrs.getFkurikulumBean().getId());
+				model.mapHeader.put(ftKrs.getId(), ftKrs);
+			}
+		}
+
+
 	}
 
 
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
+
 		initAppBar();
+		/**
+		 * Addition Properties of Tab Bar
+		 * TAB GRID
+		 * Kelemahan dari Tab Ini adalah selalu harus dipanggil ketika di attach:
+		 * Jadi harus ribet
+		 */
+		for (FKurikulum kurikulumBean : model.mapKurikulumExist.values()) {
+			int periodeYear = kurikulumBean.getFperiodeBean().getPeriodeFrom().getYear();
+			String tabLabel = kurikulumBean.getFmatPelBean().getDescription() + " (" + periodeYear + ")".toUpperCase();
+			appBar.addTab(tabLabel.toUpperCase()).setId(String.valueOf(kurikulumBean.getId())); //Selected Tab adalah kurikulumId
+		}//endfor
+		appBar.addTabSelectionListener(e -> {
+			filter();
+			detailsDrawer.hide();
+			/**
+			 * Oleh karena kelemahan dari metode tab ini
+			 */
+			selectedTabId = e.getSelectedTab().getId().get();
+		});
+		appBar.centerTabs();
+
+		try {
+			if (! selectedTabId.equals("")) {
+				Tab tab1 = appBar.getTab(selectedTabId);
+				appBar.setSelectedTab(tab1);
+			}
+		}catch (Exception ex){}
+
+
 
 		setViewContent(createContent());
 		setViewDetails(createDetailsDrawer());
@@ -118,25 +169,12 @@ public class KrsValidasiView extends SplitViewFrame {
 		filter();
 		binder.readBean(new FKurikulum());
 
+
 	}
 
+	String selectedTabId = "";
 	private void initAppBar() {
 		appBar = MainLayout.get().getAppBar();
-		/**
-		 * TAB GRID
-		 */
-
-		for (FKurikulum kurikulumBean : model.mapKurikulumExist.values()) {
-			int periodeYear = kurikulumBean.getFperiodeBean().getPeriodeFrom().getYear();
-			String tabLabel = kurikulumBean.getFmatPelBean().getDescription() + " (" +  periodeYear +")";
-			appBar.addTab(tabLabel.toUpperCase()).setId(String.valueOf(kurikulumBean.getId()));
-
-		}//endfor
-		appBar.addTabSelectionListener(e -> {
-			filter();
-			detailsDrawer.hide();
-		});
-		appBar.centerTabs();
 
 
 		btnSearchForm = appBar.addActionItem(VaadinIcon.SEARCH);
@@ -151,7 +189,9 @@ public class KrsValidasiView extends SplitViewFrame {
 		 * SAVE DAN CANCEL
 		 * berada pada createDetailsDrawer()
 		 */
+
 	}
+
 	private Component createContent() {
 		FlexBoxLayout content = new FlexBoxLayout(createGrid());
 		content.setBoxSizing(BoxSizing.BORDER_BOX);
