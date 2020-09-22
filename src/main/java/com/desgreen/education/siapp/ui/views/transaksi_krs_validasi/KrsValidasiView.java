@@ -28,6 +28,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -39,6 +40,7 @@ import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,12 +78,12 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 	private AppBar appBar;
 	private Button btnReloadFromDB;
 	private Button btnSearchForm;
+	private Button btnPrint;
+	private Anchor anchorDownload;
 
 
 	protected Binder<FKurikulum> binder = new BeanValidationBinder<>(FKurikulum.class);
 	protected FtKrs currentDomain;
-
-
 
 	public KrsValidasiView() {
 		super();
@@ -138,9 +140,12 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 		 * Jadi harus ribet
 		 */
 		for (FKurikulum kurikulumBean : model.mapKurikulumExist.values()) {
+			long qoutaMale = kurikulumBean.getFtKrsSet().stream().filter(x-> x.getFsiswaBean().isSex()==true && x.getEnumStatApproval().equals(EnumStatApproval.APPROVE)).count();
+			long qoutaFemale = kurikulumBean.getFtKrsSet().stream().filter(x-> x.getFsiswaBean().isSex()==false && x.getEnumStatApproval().equals(EnumStatApproval.APPROVE)).count();
 			int periodeYear = kurikulumBean.getFperiodeBean().getPeriodeFrom().getYear();
-			String tabLabel = kurikulumBean.getFmatPelBean().getDescription() + " (" + periodeYear + ")".toUpperCase();
-			appBar.addTab(tabLabel.toUpperCase()).setId(String.valueOf(kurikulumBean.getId())); //Selected Tab adalah kurikulumId
+			String tabLabel = kurikulumBean.getFmatPelBean().getDescription() + " (" + periodeYear + ")".toUpperCase() + " " +
+					String.valueOf(qoutaMale) +"/" + String.valueOf(qoutaFemale);
+			appBar.addTab(tabLabel).setId(String.valueOf(kurikulumBean.getId())); //Selected Tab adalah kurikulumId
 		}//endfor
 		appBar.addTabSelectionListener(e -> {
 			filter();
@@ -179,11 +184,17 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 
 		btnSearchForm = appBar.addActionItem(VaadinIcon.SEARCH);
 		btnReloadFromDB = appBar.addActionItem(VaadinIcon.REFRESH);
+		btnPrint = appBar.addActionItem(VaadinIcon.PRINT);
 
 		btnReloadFromDB.addClickListener(e -> listener.aksiBtnReloadFromDb());
 		btnSearchForm.addClickListener(e -> appBar.searchModeOn());
 
+		btnPrint.addClickListener(e -> listener.aksiBtnPrint());
+
 		appBar.addSearchListener( e -> listener.valueChangeListenerSearch(e));
+
+		anchorDownload = new Anchor(controller.getStreamResource(), "Export");
+
 
 		/**
 		 * SAVE DAN CANCEL
@@ -237,6 +248,7 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 				.setAutoWidth(true)
 				.setFlexGrow(0)
 				.setHeader("STATUS")
+				.setComparator((o1, o2) -> o1.getEnumStatApproval().getStringId().compareTo(o2.getEnumStatApproval().getStringId()))
 				.setTextAlign(ColumnTextAlign.CENTER);
 		grid.addColumn(new ComponentRenderer<>(this::createCityInfo))
 				.setAutoWidth(true)

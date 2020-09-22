@@ -342,7 +342,9 @@ public class PpdbListView extends SplitViewFrame {
 	}
 
 	private Component createKuotaMale(FKurikulum fKurikulum) {
-		ListItem item = new ListItem(String.valueOf(fKurikulum.getKuotaMale()));
+		long qoutaMale = fKurikulum.getFtKrsSet().stream().filter(x-> x.getFsiswaBean().isSex()==true && x.getEnumStatApproval().equals(EnumStatApproval.APPROVE)).count();
+		ListItem item = new ListItem(String.valueOf(qoutaMale),
+				"of " + String.valueOf(fKurikulum.getKuotaMale()) );
 		item.setPadding(Vertical.XS);
 		item.setSpacing(Right.S);
 
@@ -351,8 +353,11 @@ public class PpdbListView extends SplitViewFrame {
 
 		return item;
 	}
+
 	private Component createKuotaFemale(FKurikulum fKurikulum) {
-		ListItem item = new ListItem(String.valueOf(fKurikulum.getKuotaFemale()));
+		long qoutaFemale = fKurikulum.getFtKrsSet().stream().filter(x-> x.getFsiswaBean().isSex()==false && x.getEnumStatApproval().equals(EnumStatApproval.APPROVE)).count();
+		ListItem item = new ListItem(String.valueOf(qoutaFemale),
+				"of " + String.valueOf(fKurikulum.getKuotaFemale()) );
 		item.setPadding(Vertical.XS);
 		item.setSpacing(Right.S);
 
