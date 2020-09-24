@@ -121,6 +121,8 @@ public class PpdbListView extends SplitViewFrame {
 
 	private void initAppBar() {
 		appBar = MainLayout.get().getAppBar();
+		appBar.searchModeOff();
+
 		appBar.setNaviMode(AppBar.NaviMode.MENU);
 //		appBar.getContextIcon().addClickListener(e -> UI.getCurrent().navigate(Accounts.class));
 		appBar.setTitle( "PPDB ONLINE #" + AppPublicService.APP_DESC2 );

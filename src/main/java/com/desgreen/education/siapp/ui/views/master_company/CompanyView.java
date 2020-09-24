@@ -155,6 +155,7 @@ public class CompanyView extends SplitViewFrame {
 
 	private void initAppBar() {
 		appBar = MainLayout.get().getAppBar();
+		appBar.searchModeOff();
 
 		btnSearchForm = appBar.addActionItem(VaadinIcon.SEARCH);
 		btnReloadFromDB = appBar.addActionItem(VaadinIcon.REFRESH);

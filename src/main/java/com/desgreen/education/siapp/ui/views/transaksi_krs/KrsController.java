@@ -30,6 +30,7 @@ public class KrsController implements KrsListener {
         view.dataProvider = DataProvider.ofCollection(model.mapHeader.values());
         view.dataProvider.refreshAll();
         view.grid.setDataProvider(view.dataProvider);
+
     }
 
     @Override

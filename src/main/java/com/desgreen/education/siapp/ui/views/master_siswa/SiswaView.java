@@ -160,12 +160,13 @@ public class SiswaView extends SplitViewFrame {
 		detailsDrawer.setContent(createDetails_InfoUmum());
 //		detailsDrawer.setContent(createDetails_InfoUmum());
 //		detailsDrawer.setContent(createDetails_InfoUmum());
-
 	}
 
 
 	private void initAppBar() {
 		appBar = MainLayout.get().getAppBar();
+		appBar.searchModeOff();
+
 		/**
 		 * TAB GRID
 		 */
@@ -871,7 +872,8 @@ public class SiswaView extends SplitViewFrame {
 	protected void filter() {
 		Tab selectedTab = MainLayout.get().getAppBar().getSelectedTab();
 		if (selectedTab != null)
-			dataProvider.setFilterByValue(FSiswa::getStatSiswa, EnumStatSiswa.valueOf(selectedTab.getLabel().toUpperCase()));
+			dataProvider.setFilterByValue(p -> p.getStatSiswa()!=null? p.getStatSiswa():"", EnumStatSiswa.valueOf(selectedTab.getLabel().toUpperCase()));
+//		dataProvider.setFilterByValue(FSiswa::getStatSiswa, EnumStatSiswa.valueOf(selectedTab.getLabel().toUpperCase()));
 	}
 
 	String filterText = "";
@@ -888,6 +890,14 @@ public class SiswaView extends SplitViewFrame {
 				|| passesFilter(domain.getFullName(), this.filterText)
 				|| passesFilter(domain.getAddress1(), this.filterText)
 				|| passesFilter(domain.getCity(), this.filterText));
+
+		Tab selectedTab = MainLayout.get().getAppBar().getSelectedTab();
+		if (selectedTab != null  &&  selectedTab.getId().isPresent()) {
+			try {
+				dataProvider.addFilterByValue(p -> p.getStatSiswa() != null ? p.getStatSiswa() : "", EnumStatSiswa.valueOf(selectedTab.getLabel().toUpperCase()));
+			}catch (Exception ex){}
+		}
+
 	}
 	private boolean passesFilter(Object object, String filterText) {
 		return object != null && object.toString().toLowerCase(Locale.ENGLISH)

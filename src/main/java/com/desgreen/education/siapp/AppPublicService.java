@@ -65,7 +65,8 @@ public class AppPublicService implements Serializable {
 
 //	public static final String FILE_PATH = "/Users/yhawin/AppSourceCode/siapp_file/";
 
-	public static final String FILE_PATH= System.getProperty("user.home") + "/AppSourceCode/siapp_file/";
+	public static final String FILE_PATH= System.getProperty("user.home") + "/AppSourceCode/siapp_files/";
+	public static final String REPORT_PATH= System.getProperty("user.home") + "/AppSourceCode/siapp_reports/";
 
 	public static final String PUBLIC_HOST_EMAIL = "ponpesldii@ponpesdahlanikhsan.com";
 
@@ -75,6 +76,10 @@ public class AppPublicService implements Serializable {
 		File fileDir = new File(FILE_PATH);
 		if (!fileDir.exists()) {
 			fileDir.mkdir();
+		}
+		File reportFileDir = new File(REPORT_PATH);
+		if (!reportFileDir.exists()) {
+			reportFileDir.mkdir();
 		}
 	}
 

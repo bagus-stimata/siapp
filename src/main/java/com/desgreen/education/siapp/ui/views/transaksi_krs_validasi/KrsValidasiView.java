@@ -12,7 +12,6 @@ import com.desgreen.education.siapp.ui.components.detailsdrawer.DetailsDrawer;
 import com.desgreen.education.siapp.ui.components.detailsdrawer.DetailsDrawerFooter;
 import com.desgreen.education.siapp.ui.components.detailsdrawer.DetailsDrawerHeader;
 import com.desgreen.education.siapp.ui.components.navigation.bar.AppBar;
-import com.desgreen.education.siapp.ui.components.navigation.tab.NaviTab;
 import com.desgreen.education.siapp.ui.layout.size.Horizontal;
 import com.desgreen.education.siapp.ui.layout.size.Right;
 import com.desgreen.education.siapp.ui.layout.size.Top;
@@ -26,6 +25,7 @@ import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
@@ -33,24 +33,20 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
-import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 
 import javax.annotation.PostConstruct;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 
 
 @Secured({Role.ADMIN, Role.MNU_VALIDASI_KRS})
@@ -79,7 +75,9 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 	private Button btnReloadFromDB;
 	private Button btnSearchForm;
 	private Button btnPrint;
-	private Anchor anchorDownload;
+	private Button btnExcel;
+	private Anchor anchor_Print;
+	private Anchor anchor_Excel;
 
 
 	protected Binder<FKurikulum> binder = new BeanValidationBinder<>(FKurikulum.class);
@@ -106,8 +104,6 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 
 
 //		detailsDrawer.setContent(createDetails());
-
-		System.out.println("Lewat 2");
 
 
 	}
@@ -146,6 +142,10 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 			String tabLabel = kurikulumBean.getFmatPelBean().getDescription() + " (" + periodeYear + ")".toUpperCase() + " " +
 					String.valueOf(qoutaMale) +"/" + String.valueOf(qoutaFemale);
 			appBar.addTab(tabLabel).setId(String.valueOf(kurikulumBean.getId())); //Selected Tab adalah kurikulumId
+
+			//Select yang pertama kali jika kosong
+			if (selectedTabId.equals("")) selectedTabId = String.valueOf(kurikulumBean.getId());
+
 		}//endfor
 		appBar.addTabSelectionListener(e -> {
 			filter();
@@ -180,21 +180,38 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 	String selectedTabId = "";
 	private void initAppBar() {
 		appBar = MainLayout.get().getAppBar();
-
+		appBar.searchModeOff();
 
 		btnSearchForm = appBar.addActionItem(VaadinIcon.SEARCH);
 		btnReloadFromDB = appBar.addActionItem(VaadinIcon.REFRESH);
-		btnPrint = appBar.addActionItem(VaadinIcon.PRINT);
 
 		btnReloadFromDB.addClickListener(e -> listener.aksiBtnReloadFromDb());
 		btnSearchForm.addClickListener(e -> appBar.searchModeOn());
 
-		btnPrint.addClickListener(e -> listener.aksiBtnPrint());
-
 		appBar.addSearchListener( e -> listener.valueChangeListenerSearch(e));
 
-		anchorDownload = new Anchor(controller.getStreamResource(), "Export");
+		/**
+		 * BUAT BUTTON PRINT MANUAL
+		 */
+//		btnPrint = appBar.addActionItem(VaadinIcon.PRINT);
+//		btnPrint = new Button("Print");
+//		btnPrint.addClickListener(e -> listener.aksiBtnPrint());
+		btnPrint = UIUtils.createButton(VaadinIcon.PRINT, ButtonVariant.LUMO_SMALL,
+				ButtonVariant.LUMO_TERTIARY);
+		btnExcel = UIUtils.createButton(VaadinIcon.FILE_TEXT, ButtonVariant.LUMO_SMALL,
+				ButtonVariant.LUMO_TERTIARY);
 
+		try {
+			anchor_Print = new Anchor(controller.getStreamResource_JasperReport("LapTemplate1Ds.jrxml", "file.pdf"), null);
+			anchor_Print.add(btnPrint);
+			appBar.addActionItem(anchor_Print);
+		}catch (Exception ex){}
+
+		try {
+			anchor_Excel = new Anchor(controller.getStreamResource_Excel(), null);
+			anchor_Excel.add(btnExcel);
+			appBar.addActionItem(anchor_Excel);
+		}catch (Exception ex){}
 
 		/**
 		 * SAVE DAN CANCEL
@@ -418,11 +435,10 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 		return detailsDrawer;
 	}
 
-	private void filter() {
+	protected void filter() {
 		Tab selectedTab = MainLayout.get().getAppBar().getSelectedTab();
 		if (selectedTab != null) {
-//			System.out.println("Masuk filter: " + selectedTab.getLabel() + " >> " + selectedTab.getId().toString());
-			dataProvider.setFilterByValue(p -> String.valueOf(p.getFkurikulumBean().getId()), selectedTab.getId().get());
+			dataProvider.setFilterByValue(p -> p.getFkurikulumBean()!=null?String.valueOf(p.getFkurikulumBean().getId()):"", selectedTab.getId().get());
 		}
 	}
 
@@ -439,9 +455,10 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 				|| passesFilter(domain.getFsiswaBean()!=null?(domain.getFsiswaBean().getCity()):"", this.filterText));
 
 		Tab selectedTab = MainLayout.get().getAppBar().getSelectedTab();
-		if (selectedTab != null) {
-//			System.out.println("Masuk filter: " + selectedTab.getLabel() + " >> " + selectedTab.getId().toString());
-			dataProvider.addFilterByValue(p -> String.valueOf(p.getFkurikulumBean().getId()), selectedTab.getId().get());
+		if (selectedTab != null && selectedTab.getId().isPresent()) {
+			try {
+				dataProvider.addFilterByValue(p -> p.getFkurikulumBean() != null ? String.valueOf(p.getFkurikulumBean().getId()) : "", selectedTab.getId().get());
+			}catch (Exception ex){}
 		}
 
 	}

@@ -3,8 +3,6 @@ package com.desgreen.education.siapp.ui.utils.common;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.RenderedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
@@ -14,7 +12,6 @@ import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.jpeg.JpegDirectory;
-import org.apache.commons.io.IOUtils;
 
 import java.awt.*;
 import java.io.IOException;

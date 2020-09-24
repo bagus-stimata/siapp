@@ -145,6 +145,8 @@ public class KrsValidasiDetailView extends ViewFrame implements HasUrlParameter<
 
 	private AppBar initAppBar() {
 		AppBar appBar = MainLayout.get().getAppBar();
+		appBar.searchModeOff();
+
 		appBar.setNaviMode(AppBar.NaviMode.CONTEXTUAL);
 		appBar.getContextIcon().addClickListener(e -> UI.getCurrent().navigate(KrsValidasiView.class, model.currentDomain.getId()));
 		appBar.setTitle(model.currentDomain.getFkurikulumBean().getDescription() + " | " + model.currentDomain.getFsiswaBean().getFullName());

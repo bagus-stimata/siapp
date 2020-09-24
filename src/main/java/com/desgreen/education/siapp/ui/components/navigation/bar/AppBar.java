@@ -67,6 +67,7 @@ public class AppBar extends FlexBoxLayout {
 		initContainer();
 		initTabs(tabs);
 
+
 	}
 
 	public void setNaviMode(NaviMode mode) {
@@ -102,7 +103,7 @@ public class AppBar extends FlexBoxLayout {
 		this.title.setClassName(CLASS_NAME + "__title");
 	}
 
-	private void initSearch() {
+	public void initSearch() {
 		search = new TextField();
 		search.setPlaceholder("Search");
 		search.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
@@ -319,7 +320,7 @@ public class AppBar extends FlexBoxLayout {
 		search.setPlaceholder(placeholder);
 	}
 
-	private void searchModeOff() {
+	public void searchModeOff() {
 		menuIcon.setVisible(true);
 		title.setVisible(true);
 		tabContainer.setVisible(true);
@@ -328,7 +329,7 @@ public class AppBar extends FlexBoxLayout {
 		updateTabsVisibility();
 
 		contextIcon.setVisible(false);
-		searchRegistration.remove();
+		if (searchRegistration!=null) searchRegistration.remove();
 
 		search.clear();
 		search.setVisible(false);

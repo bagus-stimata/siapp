@@ -4,6 +4,7 @@ import com.desgreen.education.siapp.AppPublicService;
 import com.desgreen.education.siapp.backend.model.EnumStatApproval;
 import com.desgreen.education.siapp.backend.model.FSiswa;
 import com.desgreen.education.siapp.backend.model.FtKrs;
+import com.desgreen.education.siapp.ui.MainLayout;
 import com.desgreen.education.siapp.ui.util.UIUtils;
 import com.desgreen.education.siapp.ui.utils.common.CommonFileFactory;
 import com.desgreen.education.siapp.ui.utils.common.CommonImageFactory;
@@ -49,6 +50,8 @@ public class SiswaController implements SiswaListener {
         view.dataProvider = DataProvider.ofCollection(model.mapHeader.values());
         view.dataProvider.refreshAll();
         view.grid.setDataProvider(view.dataProvider);
+
+        view.filter();
     }
 
     @Override
@@ -173,7 +176,7 @@ public class SiswaController implements SiswaListener {
                     }
 
                 }catch (Exception ex){
-                    ex.printStackTrace();
+//                    ex.printStackTrace();
                 }
 
             }
@@ -185,6 +188,7 @@ public class SiswaController implements SiswaListener {
             } else {
                 view.dataProvider.refreshItem(model.currentDomain);
             }
+            view.filter();
 
             UIUtils.showNotification("DATA SAVED!! ");
             view.detailsDrawer.hide();

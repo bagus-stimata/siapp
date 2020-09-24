@@ -166,6 +166,7 @@ public class UsersView extends SplitViewFrame {
 
 	private void initAppBar() {
 		appBar = MainLayout.get().getAppBar();
+		appBar.searchModeOff();
 
 		/**
 		 * TAB GRID

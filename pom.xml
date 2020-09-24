@@ -179,6 +179,12 @@
             <version>1.0.0</version>
         </dependency>
 
+        <!-- https://vaadin.com/directory/component/file-download-wrapper/samples -->
+        <dependency>
+            <groupId>org.vaadin.olli</groupId>
+            <artifactId>file-download-wrapper</artifactId>
+            <version>3.0.1</version>
+        </dependency>
 
         <!-- POI CONVERT TO EXCEL -->
         <dependency>
@@ -204,12 +210,59 @@
             <version>2.6.12</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.drewnoakes</groupId>
             <artifactId>metadata-extractor</artifactId>
             <version>2.7.2</version>
         </dependency>
+
+
+        <!-- JASPER REPORT DEPENDENCY -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
+            <version>6.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jdt.core.compiler</groupId>
+            <artifactId>ecj</artifactId>
+            <version>4.6.1</version>
+        </dependency>
+        <!-- End Jasper Report -->
+
+        <!-- REPORT UI -->
+        <dependency>
+            <groupId>org.vaadin.reportui</groupId>
+            <artifactId>report-ui</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <!-- Bentrok dengan Aphache Poi diatas -->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.poi</groupId>-->
+<!--            <artifactId>poi-ooxml</artifactId>-->
+<!--            <version>3.17</version>-->
+<!--        </dependency>-->
+
+        <!-- End Report UI -->
+
+        <dependency>
+            <groupId>org.eclipse.jdt.core.compiler</groupId>
+            <artifactId>ecj</artifactId>
+            <version>4.6.1</version>
+        </dependency>
+
 
     </dependencies>
 

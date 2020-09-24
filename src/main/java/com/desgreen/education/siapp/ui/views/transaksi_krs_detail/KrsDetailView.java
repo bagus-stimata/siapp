@@ -130,6 +130,8 @@ public class KrsDetailView extends ViewFrame implements HasUrlParameter<Long> {
 
 	private AppBar initAppBar() {
 		AppBar appBar = MainLayout.get().getAppBar();
+		appBar.searchModeOff();
+
 		appBar.setNaviMode(AppBar.NaviMode.CONTEXTUAL);
 		appBar.getContextIcon().addClickListener(e -> UI.getCurrent().navigate(KrsView.class));
 		appBar.setTitle(currentKurikulum.getFmatPelBean().getDescription());

@@ -142,6 +142,7 @@ public class KurikulumView extends SplitViewFrame {
 
 	private void initAppBar() {
 		appBar = MainLayout.get().getAppBar();
+		appBar.searchModeOff();
 
 		btnExtractExcel = appBar.addActionItem(VaadinIcon.FILE);
 		btnSearchForm = appBar.addActionItem(VaadinIcon.SEARCH);
@@ -610,7 +611,7 @@ public class KurikulumView extends SplitViewFrame {
 		return form;
 	}
 
-		private void filter() {
+	private void filter() {
 		// dataProvider.setFilterByValue(FKurikulum::getRole, FKurikulum.Role.ACCOUNTANT);
 	}
 
