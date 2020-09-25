@@ -95,12 +95,10 @@ public class AppPublicService implements Serializable {
 
 	}
 
-
 	public void reloadMapCompany(){
 		for (FCompany domain: fCompanyJPARepository.findAll()) {
 			mapCompanys.put(domain.getId(), domain);
 		}
-
 	}
 
 	public void reloadMapDivision(){

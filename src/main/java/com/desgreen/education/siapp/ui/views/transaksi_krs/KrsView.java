@@ -112,6 +112,12 @@ public class KrsView extends SplitViewFrame {
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
+		/**
+		 * Alternatif bisa mengunakan ini
+		 * Artinya akan selalu Reload setiap menuju kesini
+		 */
+		model.reloadListHeader();
+
 		initAppBar();
 
 		setViewContent(createContent());

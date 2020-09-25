@@ -128,6 +128,12 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
 
+		/**
+		 * Alternatif bisa mengunakan ini
+		 * Artinya akan selalu Reload setiap menuju kesini
+		 */
+		model.reloadListHeader();
+
 		initAppBar();
 		/**
 		 * Addition Properties of Tab Bar
@@ -198,11 +204,16 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 //		btnPrint.addClickListener(e -> listener.aksiBtnPrint());
 		btnPrint = UIUtils.createButton(VaadinIcon.PRINT, ButtonVariant.LUMO_SMALL,
 				ButtonVariant.LUMO_TERTIARY);
-		btnExcel = UIUtils.createButton(VaadinIcon.FILE_TEXT, ButtonVariant.LUMO_SMALL,
+		btnExcel = UIUtils.createButton(VaadinIcon.DOWNLOAD, ButtonVariant.LUMO_SMALL,
 				ButtonVariant.LUMO_TERTIARY);
+
+//		Icon iconExcel = IcoMoon.FILE_EXCEL.create();
+//		btnExcel = new Button(iconExcel);
+//		btnExcel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
 		try {
 			anchor_Print = new Anchor(controller.getStreamResource_JasperReport("LapTemplate1Ds.jrxml", "file.pdf"), null);
+			anchor_Print.setTarget("_blank");
 			anchor_Print.add(btnPrint);
 			appBar.addActionItem(anchor_Print);
 		}catch (Exception ex){}

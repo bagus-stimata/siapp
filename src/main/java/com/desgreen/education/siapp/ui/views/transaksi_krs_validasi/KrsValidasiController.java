@@ -245,42 +245,4 @@ public class KrsValidasiController implements KrsValidasiListener {
 
         return CommonJasperFactory.getStreamResource_Jrxml(listLapTempate, new HashMap(), jasperFile, outputFileName);
     }
-    public StreamResource getStreamResource_JasperReportX(String jasperFile, String outputFileName){
-        StreamResource streamResource = null;
-        String jasperFilePath = AppPublicService.REPORT_PATH + jasperFile;
-
-        ZLapTemplate2 lapTemplate = new ZLapTemplate2();
-        lapTemplate.setId(1);
-        lapTemplate.setString1("Hello coba");
-        listLapTempate.add(lapTemplate);
-
-
-        try{
-            final Map parameters=new HashMap();
-
-            final JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listLapTempate);
-//            InputStream jasperFilePath = getClass().getResourceAsStream(jasperFilePath); //static path tidak bisa ditulisi ya
-            InputStream stream = new FileInputStream(new File( jasperFilePath) );
-            final JasperPrint jasperPrint = JasperFillManager.fillReport(stream, parameters, dataSource);
-
-            byte[] bytes = null;
-            try {
-                bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-            } catch (JRException ex) {
-            }
-            Objects.requireNonNull(bytes);
-            ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-
-            streamResource = new StreamResource( outputFileName, () -> bis);
-//            streamResource.setContentType("application/vnd.ms-excel");
-            streamResource.setContentType("application/pdf");
-
-
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
-
-        return streamResource;
-
-    }
 }

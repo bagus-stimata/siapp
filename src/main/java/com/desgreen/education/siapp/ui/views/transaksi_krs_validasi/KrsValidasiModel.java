@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 public class KrsValidasiModel {
 
-
     /**
      * VAADIN TIDAK BISA DI GINIKAN
      */
@@ -68,7 +67,7 @@ public class KrsValidasiModel {
 
     protected void initVariableData(){
         reloadListHeaderParent();
-        reloadListHeader();
+//        reloadListHeader();
     }
 
     protected void reloadListHeaderParent(){

@@ -144,7 +144,7 @@ public class CommonImageFactory {
             ExifIFD0Directory exifIFD0 = metadata.getDirectory(ExifIFD0Directory.class);
             orientation = exifIFD0.getInt(ExifIFD0Directory.TAG_ORIENTATION);
         } catch (Exception ex) {
-            ex.printStackTrace();
+//            ex.printStackTrace();
         }
 
 //        System.out.println("Oriensasi nya: " + orientation);

@@ -66,27 +66,19 @@ public class KrsModel {
     }
 
     protected void initVariableData(){
-        reloadListHeader();
+        reloadListHeaderParent();
+//        reloadListHeader();
     }
 
-    protected void reloadListHeader(){
-        if (userActive !=null) {
-            try {
-                currentFSiswa = fSiswaJPARepository.findById(userActive.getIdSiswa()).get();
-
-            } catch (Exception ex) {
-            }
+    protected void reloadListHeaderParent(){
 
             List<FKurikulum> list = new ArrayList<>();
-
             if (userActive.getOrganizationLevel().equals(EnumOrganizationLevel.DIV)) {
                 listFDivision = new ArrayList<FDivision>(appPublicService.mapDivisions.values().stream()
                         .filter(x -> x.equals(userActive.getFdivisionBean()) && x.isStatActive() == true).collect(Collectors.toList()));
 
                 listFPeriode = new ArrayList<>(fPeriodeJPARepository.findAllByParent(userActive.getFdivisionBean()).stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList()));
                 listFMatPel = new ArrayList<>(fMatPelJPARepository.findAllByParent(userActive.getFdivisionBean()).stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList()));
-
-                list.addAll(fKurikulumJPARepository.findAll().stream().filter(x -> x.isStatActive() == true && x.getFdivisionBean().equals(userActive.getFdivisionBean())).collect(Collectors.toList()));
 
             } else if (userActive.getOrganizationLevel().equals(EnumOrganizationLevel.CORP)) {
                 listFDivision = new ArrayList<FDivision>(appPublicService.mapDivisions.values().stream()
@@ -97,13 +89,34 @@ public class KrsModel {
                 listFMatPel = new ArrayList<>(fMatPelJPARepository
                         .findAllByParent(userActive.getFdivisionBean().getFcompanyBean().getFdivisionSet()).stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList()));
 
-                list.addAll(fKurikulumJPARepository.findAll().stream().filter(x -> x.isStatActive() == true && x.getFdivisionBean().getFcompanyBean().equals(userActive.getFdivisionBean().getFcompanyBean())).collect(Collectors.toList()));
-
             } else {
                 listFDivision = new ArrayList<>(appPublicService.mapDivisions.values().stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList()));
 
                 listFPeriode = new ArrayList<>(fPeriodeJPARepository.findAll()).stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList());
                 listFMatPel = new ArrayList<>(fMatPelJPARepository.findAll()).stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList());
+            }
+
+
+
+    }
+
+    protected void reloadListHeader() {
+        if (userActive != null) {
+            try {
+                currentFSiswa = fSiswaJPARepository.findById(userActive.getIdSiswa()).get();
+
+            } catch (Exception ex) {
+            }
+
+            List<FKurikulum> list = new ArrayList<>();
+            if (userActive.getOrganizationLevel().equals(EnumOrganizationLevel.DIV)) {
+                list.addAll(fKurikulumJPARepository.findAll().stream().filter(x -> x.isStatActive() == true && x.getFdivisionBean().equals(userActive.getFdivisionBean())).collect(Collectors.toList()));
+
+            } else if (userActive.getOrganizationLevel().equals(EnumOrganizationLevel.CORP)) {
+
+                list.addAll(fKurikulumJPARepository.findAll().stream().filter(x -> x.isStatActive() == true && x.getFdivisionBean().getFcompanyBean().equals(userActive.getFdivisionBean().getFcompanyBean())).collect(Collectors.toList()));
+
+            } else {
 
                 list.addAll(fKurikulumJPARepository.findAll().stream().filter(x -> x.isStatActive() == true).collect(Collectors.toList()));
             }
@@ -111,7 +124,7 @@ public class KrsModel {
             for (FKurikulum domain : list.stream().filter(x ->
                     (x.getFperiodeBean().getDaftarOpenFrom().isBefore(LocalDate.now()) || x.getFperiodeBean().getDaftarOpenFrom().isEqual(LocalDate.now())) &&
                             (x.getFperiodeBean().getDaftarCloseTo().isAfter(LocalDate.now()) || x.getFperiodeBean().getDaftarCloseTo().isEqual(LocalDate.now()))
-                    ).collect(Collectors.toList())) {
+            ).collect(Collectors.toList())) {
                 mapHeader.put(domain.getId(), domain);
             }
 
@@ -123,12 +136,11 @@ public class KrsModel {
             for (FKurikulum domain : fKurikulumJPARepository.findAllActive().stream().filter(x ->
                     (x.getFperiodeBean().getDaftarOpenFrom().isBefore(LocalDate.now()) || x.getFperiodeBean().getDaftarOpenFrom().isEqual(LocalDate.now())) &&
                             (x.getFperiodeBean().getDaftarCloseTo().isAfter(LocalDate.now()) || x.getFperiodeBean().getDaftarCloseTo().isEqual(LocalDate.now()))
-                    ).collect(Collectors.toList())) {
+            ).collect(Collectors.toList())) {
                 mapHeader.put(domain.getId(), domain);
             }
 
         }//endif
-
 
     }
 
