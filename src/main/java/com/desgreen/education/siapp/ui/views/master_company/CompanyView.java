@@ -18,7 +18,6 @@ import com.desgreen.education.siapp.ui.layout.size.Top;
 import com.desgreen.education.siapp.ui.layout.size.Vertical;
 import com.desgreen.education.siapp.ui.util.LumoStyles;
 import com.desgreen.education.siapp.ui.util.UIUtils;
-import com.desgreen.education.siapp.ui.util.css.BorderRadius;
 import com.desgreen.education.siapp.ui.util.css.BoxSizing;
 import com.desgreen.education.siapp.ui.utils.common.CommonImageFactory;
 import com.desgreen.education.siapp.ui.views.SplitViewFrame;
@@ -39,6 +38,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.radiobutton.RadioGroupVariant;
@@ -59,15 +59,16 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import org.apache.commons.io.IOUtils;
+import com.wontlost.ckeditor.EditorType;
+import com.wontlost.ckeditor.VaadinCKEditor;
+import com.wontlost.ckeditor.VaadinCKEditorBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -96,8 +97,9 @@ public class CompanyView extends SplitViewFrame {
 
 	// Tabs in the drawer
 	Tab tabInfoUmum = new Tab("Info Umum");
- 	Tab tabLogoImage = new Tab("Upload Logo");
-	Tabs tabs = new Tabs(tabInfoUmum, tabLogoImage );
+ 	Tab tabLogoImage = new Tab("Logo");
+	Tab tabRegDisclaimer = new Tab("Reg Disclaimer");
+	Tabs tabs = new Tabs(tabInfoUmum, tabLogoImage, tabRegDisclaimer );
 
 	private AppBar appBar;
 	private Button btnReloadFromDB;
@@ -309,8 +311,10 @@ public class CompanyView extends SplitViewFrame {
 			detailsDrawer.setContent(createDetails_InfoUmum());
 		} else if (selectedTab.equals(tabLogoImage)) {
 			detailsDrawer.setContent(createDetails_Photo());
-
+		} else if (selectedTab.equals(tabRegDisclaimer)) {
+			detailsDrawer.setContent(createDetails_RegDisclaimer());
 		}
+
 	}
 
 	protected void showDetails(FCompany fCompany) {
@@ -372,6 +376,12 @@ public class CompanyView extends SplitViewFrame {
 		binder.bindInstanceFields(this);
 		binder.forField(checkStatusActive)
 				.bind(FCompany::isStatActive, FCompany::setStatActive);
+
+		/**
+		 * CKEditor Binder
+		 */
+		binder.forField(ckEditorDisclaimer)
+				.bind(FCompany::getRegDisclaimer, FCompany::setRegDisclaimer);
 
 		/**
 		 * Decorate the Form View
@@ -475,15 +485,11 @@ public class CompanyView extends SplitViewFrame {
 		try {
 			imageOuput = CommonFileFactory.generateImage(AppPublicService.FILE_PATH + model.currentDomain.getLogoImage());
 		}catch (Exception ex){}
-//		imageOuput.setMaxHeight("400px");
-//		imageOuput.setMaxWidth("300px");
 		int newWidth = 300;
 		int newHeight = 400;
 		try {
-			BufferedImage buffImage = ImageIO.read(buffer.getInputStream());
-			buffImage = CommonImageFactory.autoRotateImage(buffImage,
-					CommonImageFactory.getImageRotationSuggestion(buffer.getInputStream()));
-			newHeight = CommonImageFactory.getMaxScaleHeight(buffImage, newWidth);
+			BufferedImage bufferedImage = ImageIO.read(new File(AppPublicService.FILE_PATH + model.currentDomain.getLogoImage()));
+			newHeight = CommonImageFactory.getMaxScaleHeight(bufferedImage.getWidth(), bufferedImage.getHeight(), newWidth);
 		}catch (Exception ex){}
 		imageOuput.setWidth(newWidth, Unit.PIXELS);
 		imageOuput.setHeight(newHeight, Unit.PIXELS);
@@ -501,8 +507,35 @@ public class CompanyView extends SplitViewFrame {
 		return form;
 	}
 
+	protected VaadinCKEditor ckEditorDisclaimer = new VaadinCKEditorBuilder().with(builder->{
+		builder.editorType= EditorType.DECOUPLED;
+		builder.editorData="Dcoupled Editor";
+	}).createVaadinCKEditor();
+	private FlexBoxLayout createDetails_RegDisclaimer() {
+
+		/**Document Editor*/
+//		ckEditorDisclaimer = new VaadinCKEditorBuilder().with(builder->{
+//			builder.editorType= EditorType.DECOUPLED;
+//			builder.editorData="Dcoupled Editor";
+//		}).createVaadinCKEditor();
+
+		/**Set Editor Content*/
+//		ckEditorDisclaimer.setValue("New Content");
+//		decoupledEditor.updateValue();
+//		decoupledEditor.doSetUpdate("New Content");
+
+		FlexBoxLayout form = new FlexBoxLayout(ckEditorDisclaimer);
+
+//		form.setMargin(true);
+//		form.setSpacing(true);
+		form.setFlexDirection(FlexLayout.FlexDirection.ROW);
+//		form.setMargin(Horizontal.AUTO); //ini yang bikin memanjang bos
+		form.setAlignItems(FlexComponent.Alignment.CENTER);
+
+		return form;
+	}
+
 	private void updateImageView(SucceededEvent event){
-//		UIUtils.showNotification("CREATE AND SHOW MESSAGE");
 		isImageChange =true;
 
 		//Agar Photo langsung terlihat
@@ -525,15 +558,6 @@ public class CompanyView extends SplitViewFrame {
 		divImage.addComponentAsFirst(imageOuput);
 
 		footer.setEnabled(true);
-
-//		try {
-//			InputStream is = buffer.getInputStream();
-//			BufferedImage image = ImageIO.read(is);
-//
-//			byte[] bytes = IOUtils.toByteArray(is);
-//			System.out.println("Available: " + buffer.getInputStream().available());
-//			System.out.println("Bytes: " + bytes.length );
-//		}catch (Exception ex){}
 
 	}
 

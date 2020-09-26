@@ -131,7 +131,8 @@ public class CompanyController implements CompanyListener{
                 if (oldFile.exists()) oldFile.delete();
 
                 //Set Nama Image::
-                model.currentDomain.setLogoImage("_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle().get());
+                model.currentDomain.setLogoImage(model.currentDomain.getId()
+                        + "_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle().get());
             }
 
             model.currentDomain = model.fCompanyJPARepository.save(model.currentDomain);
@@ -139,9 +140,6 @@ public class CompanyController implements CompanyListener{
 
             //Lakukan Upload Image to Disk
             if ( ! model.currentDomain.getLogoImage().equals("") && view.isImageChange && view.buffer.getInputStream() !=null) {
-//                CommonFileFactory.writeStreamToFile(view.buffer.getInputStream(), model.currentDomain.getLogoImage());
-//                CommonFileFactory.writeStreamToFile(view.imageOuput., model.currentDomain.getLogoImage());
-
                 File targetFile = new File(AppPublicService.FILE_PATH + model.currentDomain.getLogoImage());
                 String extention = CommonFileFactory.getExtensionByStringHandling(model.currentDomain.getLogoImage()).get();
                 try {

@@ -109,7 +109,12 @@ public class DivisionController implements DivisionListener {
 
     @Override
     public void aksiBtnSaveForm() {
-
+        /**
+         * KETIKA SAVE -> MAKA GMBAR HARUSNYA DILIHAT. APAKAH GAMBAR ADA PERUBAHAN ATAU TIDAK
+         * JIKA IYA MAKA
+         * HAPUS DAN GANTI BARU
+         * JIKA TIDAK. DIBIARKAN
+         */
         final boolean newDomain = model.currentDomain.isNewDomain();
         if (model.currentDomain != null
                 && view.binder.writeBeanIfValid(model.currentDomain)) {
@@ -121,15 +126,14 @@ public class DivisionController implements DivisionListener {
 
                 //Set Nama Image
                 model.currentDomain.setLogoImage(model.currentDomain.getFcompanyBean().getId()
-                        + "_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle() );
+                        + "_" + System.currentTimeMillis() + "_" + view.imageOuput.getTitle().get() );
             }
 
             model.currentDomain = model.fDivisionJPARepository.save(model.currentDomain);
             model.mapHeader.put(model.currentDomain.getId(), model.currentDomain);
 
             //Lakukan Upload Image to Disk
-            if ( ! model.currentDomain.getLogoImage().equals("") && view.isImageChange) {
-//                CommonFileFactory.writeStreamToFile(view.buffer.getInputStream(), model.currentDomain.getLogoImage());
+            if ( ! model.currentDomain.getLogoImage().equals("") && view.isImageChange && view.buffer.getInputStream() !=null) {
                 File targetFile = new File(AppPublicService.FILE_PATH + model.currentDomain.getLogoImage());
                 String extention = CommonFileFactory.getExtensionByStringHandling(model.currentDomain.getLogoImage()).get();
                 try {
@@ -162,11 +166,7 @@ public class DivisionController implements DivisionListener {
             /**
              * REfresh Public Variabel
              */
-            try {
-                model.appPublicService.reloadMapDivision();
-                model.appPublicService.mapDivisions.put(model.currentDomain.getId(), model.currentDomain);
-            }catch (Exception ex){
-            }
+            model.appPublicService.reloadMapDivision();
 
             view.detailsDrawer.hide();
             UIUtils.showNotification("DATA SAVED!! ");

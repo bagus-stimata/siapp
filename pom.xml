@@ -248,7 +248,7 @@
             <version>3.0.2</version>
         </dependency>
 
-        <!-- Bentrok dengan Aphache Poi diatas -->
+        <!-- Bentrok dengan Aphache Poi diatas: Jangan gunakan yang baru ya -->
 <!--        <dependency>-->
 <!--            <groupId>org.apache.poi</groupId>-->
 <!--            <artifactId>poi-ooxml</artifactId>-->
@@ -263,6 +263,19 @@
             <version>4.6.1</version>
         </dependency>
 
+        <!-- ApexChart -->
+        <dependency>
+            <groupId>com.github.appreciated</groupId>
+            <artifactId>apexcharts</artifactId>
+            <version>2.0.0.beta10</version>
+        </dependency>
+
+        <!-- CKEditor -->
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>ckeditor-vaadin</artifactId>
+            <version>1.0.7</version>
+        </dependency>
 
     </dependencies>
 

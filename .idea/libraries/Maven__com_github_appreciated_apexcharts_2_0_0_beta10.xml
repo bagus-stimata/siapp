@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.github.appreciated:apexcharts:2.0.0.beta10">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/appreciated/apexcharts/2.0.0.beta10/apexcharts-2.0.0.beta10.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/appreciated/apexcharts/2.0.0.beta10/apexcharts-2.0.0.beta10-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/appreciated/apexcharts/2.0.0.beta10/apexcharts-2.0.0.beta10-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

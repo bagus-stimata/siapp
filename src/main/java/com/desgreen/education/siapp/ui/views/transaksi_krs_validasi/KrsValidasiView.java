@@ -1,5 +1,13 @@
 package com.desgreen.education.siapp.ui.views.transaksi_krs_validasi;
 
+import ar.com.fdvs.dj.domain.AutoText;
+import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
+import ar.com.fdvs.dj.domain.builders.GroupBuilder;
+import ar.com.fdvs.dj.domain.builders.StyleBuilder;
+import ar.com.fdvs.dj.domain.constants.Font;
+import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
 import com.desgreen.education.siapp.AppPublicService;
 import com.desgreen.education.siapp.backend.model.*;
 import com.desgreen.education.siapp.security_config.AuthUserDetailsService;
@@ -16,9 +24,11 @@ import com.desgreen.education.siapp.ui.layout.size.Horizontal;
 import com.desgreen.education.siapp.ui.layout.size.Right;
 import com.desgreen.education.siapp.ui.layout.size.Top;
 import com.desgreen.education.siapp.ui.layout.size.Vertical;
+import com.desgreen.education.siapp.ui.util.LumoStyles;
 import com.desgreen.education.siapp.ui.util.TextColor;
 import com.desgreen.education.siapp.ui.util.UIUtils;
 import com.desgreen.education.siapp.ui.util.css.BoxSizing;
+import com.desgreen.education.siapp.ui.utils.common.CommonDateFormat;
 import com.desgreen.education.siapp.ui.views.SplitViewFrame;
 import com.desgreen.education.siapp.ui.views.transaksi_krs_validasi_detail.KrsValidasiDetailView;
 import com.vaadin.flow.component.AttachEvent;
@@ -29,24 +39,33 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.function.SerializableSupplier;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.vaadin.reports.PrintPreviewReport;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Secured({Role.ADMIN, Role.MNU_VALIDASI_KRS})
@@ -75,10 +94,10 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 	private Button btnReloadFromDB;
 	private Button btnSearchForm;
 	private Button btnPrint;
+	private Button btnPrintReportUi;
 	private Button btnExcel;
 	private Anchor anchor_Print;
 	private Anchor anchor_Excel;
-
 
 	protected Binder<FKurikulum> binder = new BeanValidationBinder<>(FKurikulum.class);
 	protected FtKrs currentDomain;
@@ -105,9 +124,7 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 
 //		detailsDrawer.setContent(createDetails());
 
-
 	}
-
 
 	@Override
 	public void setParameter(BeforeEvent beforeEvent, @OptionalParameter  Long paramId) {
@@ -119,10 +136,7 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 				model.mapHeader.put(ftKrs.getId(), ftKrs);
 			}
 		}
-
-
 	}
-
 
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
@@ -142,11 +156,11 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 		 * Jadi harus ribet
 		 */
 		for (FKurikulum kurikulumBean : model.mapKurikulumExist.values()) {
-			long qoutaMale = kurikulumBean.getFtKrsSet().stream().filter(x-> x.getFsiswaBean().isSex()==true && x.getEnumStatApproval().equals(EnumStatApproval.APPROVE)).count();
-			long qoutaFemale = kurikulumBean.getFtKrsSet().stream().filter(x-> x.getFsiswaBean().isSex()==false && x.getEnumStatApproval().equals(EnumStatApproval.APPROVE)).count();
+			long filledQuotaMale = kurikulumBean.getFtKrsSet().stream().filter(x-> x.getFsiswaBean().isSex()==true && x.getEnumStatApproval().equals(EnumStatApproval.APPROVE)).count();
+			long filledQoutaFemale = kurikulumBean.getFtKrsSet().stream().filter(x-> x.getFsiswaBean().isSex()==false && x.getEnumStatApproval().equals(EnumStatApproval.APPROVE)).count();
 			int periodeYear = kurikulumBean.getFperiodeBean().getPeriodeFrom().getYear();
 			String tabLabel = kurikulumBean.getFmatPelBean().getDescription() + " (" + periodeYear + ")".toUpperCase() + " " +
-					String.valueOf(qoutaMale) +"/" + String.valueOf(qoutaFemale);
+					String.valueOf(filledQuotaMale) +"/" + String.valueOf(filledQoutaFemale);
 			appBar.addTab(tabLabel).setId(String.valueOf(kurikulumBean.getId())); //Selected Tab adalah kurikulumId
 
 			//Select yang pertama kali jika kosong
@@ -207,15 +221,24 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 		btnExcel = UIUtils.createButton(VaadinIcon.DOWNLOAD, ButtonVariant.LUMO_SMALL,
 				ButtonVariant.LUMO_TERTIARY);
 
+		btnPrintReportUi = UIUtils.createButton(VaadinIcon.PRINT, ButtonVariant.LUMO_SMALL,
+				ButtonVariant.LUMO_TERTIARY);
+
 //		Icon iconExcel = IcoMoon.FILE_EXCEL.create();
 //		btnExcel = new Button(iconExcel);
 //		btnExcel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+
+		appBar.addActionItem(btnPrintReportUi);
+		btnPrintReportUi.addClickListener( e -> {
+			setViewContent(createContentReportUi());
+		});
 
 		try {
 			anchor_Print = new Anchor(controller.getStreamResource_JasperReport("LapTemplate1Ds.jrxml", "file.pdf"), null);
 			anchor_Print.setTarget("_blank");
 			anchor_Print.add(btnPrint);
-			appBar.addActionItem(anchor_Print);
+//			appBar.addActionItem(anchor_Print);
+
 		}catch (Exception ex){}
 
 		try {
@@ -291,6 +314,110 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 				.setTextAlign(ColumnTextAlign.END);
 
 		return grid;
+	}
+
+	private Component createContentReportUi(){
+		FlexBoxLayout content = new FlexBoxLayout(createReportUi());
+		content.setBoxSizing(BoxSizing.BORDER_BOX);
+		content.setHeightFull();
+		content.setPadding(Horizontal.RESPONSIVE_X, Top.RESPONSIVE_X);
+		return content;
+	}
+
+	List<ZLapTemplate2> listLapTemplate = new ArrayList<>();
+	HorizontalLayout exportButtons = new HorizontalLayout();
+	Button btnBack;
+	PrintPreviewReport<ZLapTemplate2> report = new PrintPreviewReport<>(ZLapTemplate2.class, "string1", "string2", "string3", "string4", "string5", "string6");
+	private Div createReportUi(){
+		listLapTemplate.clear();
+		for (FtKrs c : dataProvider.getItems().stream().filter(ftKrs -> String.valueOf(ftKrs.getFkurikulumBean().getId()).equals(selectedTabId))
+				.collect(Collectors.toList())) {
+			ZLapTemplate2 domain = new ZLapTemplate2();
+			domain.setId(c.getId());
+			domain.setString1(c.getFsiswaBean().getFullName());
+			domain.setString2(c.getFsiswaBean().isSex() ? "Laki-Laki" : "Perempuan");
+			domain.setString3(c.getFsiswaBean().getAddress1() + " " + c.getFsiswaBean().getAddress2() + " " + c.getFsiswaBean().getAddress3());
+			domain.setString4(c.getFsiswaBean().getCity());
+			domain.setString5(c.getFsiswaBean().getPhone());
+
+			listLapTemplate.add(domain);
+		}
+
+
+		Div content = new Div();
+		Style headerStyle = new StyleBuilder(true).setFont(Font.ARIAL_MEDIUM).build();
+		Style groupStyle = new StyleBuilder(true).setFont(Font.ARIAL_MEDIUM_BOLD).build();
+
+		AbstractColumn columnNama;
+
+		PrintPreviewReport<ZLapTemplate2> report = new PrintPreviewReport<>();
+		report.getReportBuilder()
+				.setMargins(20, 20, 40, 40)
+				.setTitle(appBar.getSelectedTab().getLabel())
+				.addAutoText(model.userActive.getFdivisionBean().getFcompanyBean().getDescription(), AutoText.POSITION_HEADER, AutoText.ALIGMENT_LEFT, 200, headerStyle)
+				.addAutoText(LocalDateTime.now().toString(), AutoText.POSITION_HEADER, AutoText.ALIGNMENT_RIGHT, 200, headerStyle)
+				.addAutoText(AutoText.AUTOTEXT_PAGE_X_OF_Y, AutoText.POSITION_HEADER, AutoText.ALIGNMENT_RIGHT, 200, 10, headerStyle)
+//                .setPrintBackgroundOnOddRows(true) //Selang-Seling Row
+
+				.addColumn(columnNama = ColumnBuilder.getNew()
+						.setColumnProperty("string1", String.class)
+						.setTitle("Nama")
+						.setWidth(130).setFixedWidth(true)
+//						.setStyle(groupStyle)
+						.build())
+//				.addGroup(new GroupBuilder()
+//						.setCriteriaColumn((PropertyColumn) columnNama)
+//						.build())
+
+				.addColumn(ColumnBuilder.getNew()
+						.setColumnProperty("string2", String.class)
+						.setTitle("Jkel")
+						.build())
+				.addColumn(ColumnBuilder.getNew()
+						.setColumnProperty("string3", String.class)
+						.setTitle("Alamat")
+						.build())
+//				.addColumn(ColumnBuilder.getNew()
+//						.setColumnProperty("startTime", LocalDateTime.class)
+//						.setTextFormatter(DateTimeFormatter.ISO_LOCAL_TIME.toFormat())
+//						.setTitle("Start time")
+//						.build())
+//				.addColumn(ColumnBuilder.getNew()
+//						.setColumnProperty("duration", Integer.class)
+//						.setTitle("Duration (seconds)")
+//						.build())
+				.addColumn(ColumnBuilder.getNew()
+						.setColumnProperty("string4", String.class)
+						.setTitle("Kota")
+						.build())
+				.addColumn(ColumnBuilder.getNew()
+						.setColumnProperty("string5", String.class)
+						.setTitle("Telp").build());
+
+		SerializableSupplier<List<? extends ZLapTemplate2>> itemsSupplier = () -> listLapTemplate;
+		report.setItems(itemsSupplier.get());
+
+		exportButtons.removeAll();
+		for (PrintPreviewReport.Format format : PrintPreviewReport.Format.values()) {
+			Anchor anchor = new Anchor(report.getStreamResource("call-report." + format.name().toLowerCase(), itemsSupplier, format),
+					format.name());
+			anchor.getElement().setAttribute("download", true);
+
+			exportButtons.add(anchor);
+		}
+
+		btnBack = UIUtils.createTertiaryInlineButton(VaadinIcon.CLOSE);
+		btnBack.addClickListener(e -> {
+			setViewContent(createContent());
+		});
+
+		Icon icon = new Icon(VaadinIcon.CLOSE);
+		icon.setColor("red");
+		btnBack.setIcon(icon);
+		btnBack.addThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.MATERIAL_OUTLINED);
+		exportButtons.addComponentAsFirst(btnBack);
+		content.add(exportButtons, report);
+		return  content;
 	}
 
 	private void viewDetails(FtKrs ftKrs) {

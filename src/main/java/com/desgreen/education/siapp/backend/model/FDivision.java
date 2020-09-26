@@ -43,6 +43,8 @@ public class FDivision implements Serializable {
 	//Image Logo
 	private String logoImage ="";
 
+
+
 	@Column(name="DIFF_COMPANY_ACC")
 	private boolean diffCompanyAccount = false;
 

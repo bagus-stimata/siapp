@@ -74,6 +74,7 @@ import org.springframework.security.access.annotation.Secured;
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -761,12 +762,10 @@ public class SiswaView extends SplitViewFrame {
 		nomorKiKelompok.setPrefixComponent(new Span("+62"));
 
 
-
 		// Form layout
 		FormLayout form = new FormLayout();
 		form.addClassNames(LumoStyles.Padding.Bottom.L,
 				LumoStyles.Padding.Horizontal.L, LumoStyles.Padding.Top.S);
-
 
 		form.addFormItem(daerahSambung, "Daerah");
 		form.addFormItem(desaSambung, "Desa");
@@ -800,10 +799,8 @@ public class SiswaView extends SplitViewFrame {
 		int newWidth = 300;
 		int newHeight = 400;
 		try {
-			BufferedImage buffImage = ImageIO.read(buffer.getInputStream());
-			buffImage = CommonImageFactory.autoRotateImage(buffImage,
-					CommonImageFactory.getImageRotationSuggestion(buffer.getInputStream()));
-			newHeight = CommonImageFactory.getMaxScaleHeight(buffImage, newWidth);
+			BufferedImage bufferedImage = ImageIO.read(new File(AppPublicService.FILE_PATH + model.currentDomain.getImageName()));
+			newHeight = CommonImageFactory.getMaxScaleHeight(bufferedImage.getWidth(), bufferedImage.getHeight(), newWidth);
 		}catch (Exception ex){}
 		imageOuput.setWidth(newWidth, Unit.PIXELS);
 		imageOuput.setHeight(newHeight, Unit.PIXELS);

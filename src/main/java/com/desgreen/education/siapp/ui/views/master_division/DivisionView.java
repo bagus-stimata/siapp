@@ -68,6 +68,7 @@ import org.springframework.security.access.annotation.Secured;
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -502,7 +503,7 @@ public class DivisionView extends SplitViewFrame {
 		upload.setAutoUpload(true); //ini bagian penting
 		upload.setSizeFull();
 
-		upload.setMaxFileSize(1500 * 1024);
+		upload.setMaxFileSize( 3* 1500 * 1024);
 		upload.setHeight("100px");
 
 		imageOuput = new Image();
@@ -512,13 +513,15 @@ public class DivisionView extends SplitViewFrame {
 		int newWidth = 300;
 		int newHeight = 400;
 		try {
-			BufferedImage buffImage = ImageIO.read(buffer.getInputStream());
-			buffImage = CommonImageFactory.autoRotateImage(buffImage,
-					CommonImageFactory.getImageRotationSuggestion(buffer.getInputStream()));
-			newHeight = CommonImageFactory.getMaxScaleHeight(buffImage, newWidth);
-		}catch (Exception ex){}
+			BufferedImage bufferedImage = ImageIO.read(new File(AppPublicService.FILE_PATH + model.currentDomain.getLogoImage()));
+			newHeight = CommonImageFactory.getMaxScaleHeight(bufferedImage.getWidth(), bufferedImage.getHeight(), newWidth);
+		}catch (Exception ex){
+			ex.printStackTrace();
+		}
 		imageOuput.setWidth(newWidth, Unit.PIXELS);
 		imageOuput.setHeight(newHeight, Unit.PIXELS);
+
+//		System.out.println("Hello tes: " + model.currentDomain.getLogoImage() + " >> " + imageOuput.getSrc());
 
 		divImage.removeAll();
 		divImage.addComponentAsFirst(imageOuput);
@@ -533,7 +536,6 @@ public class DivisionView extends SplitViewFrame {
 	}
 
 	private void updateImageView(SucceededEvent event){
-//		UIUtils.showNotification("CREATE AND SHOW MESSAGE");
 		isImageChange =true;
 
 		//Agar Photo langsung terlihat

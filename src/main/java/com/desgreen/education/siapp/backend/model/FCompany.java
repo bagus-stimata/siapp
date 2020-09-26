@@ -2,6 +2,7 @@ package com.desgreen.education.siapp.backend.model;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,6 +32,13 @@ public class FCompany implements Serializable {
 
 	//Image Logo
 	private String logoImage ="";
+
+	/**
+	 * Digunakan apabila user akan mendaftar. maka dia akan menemukan disclaimer ini
+	 */
+	@Lob
+	@Type(type = "text")
+	private String regDisclaimer= "";
 
 
 	private boolean statActive=true;
@@ -228,6 +236,14 @@ public class FCompany implements Serializable {
 
 	public void setWebAplikasi(String webAplikasi) {
 		this.webAplikasi = webAplikasi;
+	}
+
+	public String getRegDisclaimer() {
+		return regDisclaimer;
+	}
+
+	public void setRegDisclaimer(String regDisclaimer) {
+		this.regDisclaimer = regDisclaimer;
 	}
 
 	@Override
