@@ -51,7 +51,10 @@
     "@vaadin-component-factory/vcf-toggle-button": "1.0.1",
     "open": "^7.2.1",
     "apexcharts": "3.20.2",
-    "onecolor": "3.1.0"
+    "onecolor": "3.1.0",
+    "@polymer/iron-icons": "v3.0.1",
+    "spinkit": "^2.0.0",
+    "@flowingcode/font-awesome-iron-iconset": "2.1.2"
   },
   "devDependencies": {
     "webpack": "4.42.0",
@@ -124,7 +127,10 @@
       "open": "^7.2.1",
       "@vaadin-component-factory/vcf-toggle-button": "1.0.1",
       "apexcharts": "3.20.2",
-      "onecolor": "3.1.0"
+      "onecolor": "3.1.0",
+      "@polymer/iron-icons": "v3.0.1",
+      "spinkit": "^2.0.0",
+      "@flowingcode/font-awesome-iron-iconset": "2.1.2"
     },
     "devDependencies": {
       "webpack-babel-multi-target-plugin": "2.3.3",
@@ -147,6 +153,6 @@
       "lit-html": "1.2.1",
       "@types/validator": "10.11.3"
     },
-    "hash": "ad3b85a777af09edb748b9f72cf117ae8dbf7f384b5b7a6dcbb4608aab9f549b"
+    "hash": "b3698d85283468539eec87142afa676e67f980bba72d0a0acb1145326e5c5e57"
   }
 }

@@ -31,6 +31,9 @@ import com.desgreen.education.siapp.ui.util.css.BoxSizing;
 import com.desgreen.education.siapp.ui.utils.common.CommonDateFormat;
 import com.desgreen.education.siapp.ui.views.SplitViewFrame;
 import com.desgreen.education.siapp.ui.views.transaksi_krs_validasi_detail.KrsValidasiDetailView;
+import com.flowingcode.vaadin.addons.fontawesome.FontAwesome;
+import com.flowingcode.vaadin.addons.ironicons.IronIconEnum;
+import com.flowingcode.vaadin.addons.ironicons.IronIcons;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
@@ -42,6 +45,7 @@ import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.IronIcon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -218,15 +222,15 @@ public class KrsValidasiView extends SplitViewFrame  implements HasUrlParameter<
 //		btnPrint.addClickListener(e -> listener.aksiBtnPrint());
 		btnPrint = UIUtils.createButton(VaadinIcon.PRINT, ButtonVariant.LUMO_SMALL,
 				ButtonVariant.LUMO_TERTIARY);
-		btnExcel = UIUtils.createButton(VaadinIcon.DOWNLOAD, ButtonVariant.LUMO_SMALL,
+
+		btnExcel = UIUtils.createButton(VaadinIcon.FILE_TABLE, ButtonVariant.LUMO_SMALL,
 				ButtonVariant.LUMO_TERTIARY);
+//		btnExcel = new Button(VaadinIcon.FILE_TABLE.create());
+//		btnExcel.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_SMALL);
 
 		btnPrintReportUi = UIUtils.createButton(VaadinIcon.PRINT, ButtonVariant.LUMO_SMALL,
 				ButtonVariant.LUMO_TERTIARY);
 
-//		Icon iconExcel = IcoMoon.FILE_EXCEL.create();
-//		btnExcel = new Button(iconExcel);
-//		btnExcel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
 		appBar.addActionItem(btnPrintReportUi);
 		btnPrintReportUi.addClickListener( e -> {

@@ -1,5 +1,7 @@
 dependencies:
+  '@flowingcode/font-awesome-iron-iconset': 2.1.2
   '@polymer/iron-icon': 3.0.1
+  '@polymer/iron-icons': 3.0.1
   '@polymer/iron-list': 3.1.0
   '@polymer/polymer': 3.2.0
   '@vaadin-component-factory/vcf-toggle-button': 1.0.1
@@ -49,6 +51,7 @@ dependencies:
   lit-element: 2.3.1
   onecolor: 3.1.0
   open: 7.2.1
+  spinkit: 2.0.1
 devDependencies:
   '@types/validator': 10.11.3
   awesome-typescript-loader: 5.2.1_typescript@3.8.3
@@ -925,6 +928,14 @@ packages:
     dev: true
     resolution:
       integrity: sha512-XjnvNqenk818r5zMaba+sLQjnbda31UfUURv3ei0qPQw4u+j2jMyJ5b11y8ZHYTRSI3NnInQkkkRT4fLqqPdHg==
+  /@flowingcode/font-awesome-iron-iconset/2.1.2:
+    dependencies:
+      '@polymer/iron-icon': 3.0.1
+      '@polymer/iron-iconset-svg': 3.0.1
+      '@polymer/polymer': 3.2.0
+    dev: false
+    resolution:
+      integrity: sha512-LwC1tvPVOjozB8h2n95VQPUlG1IQdQ5z3x9lIstoGUzh03NYUIxWs4/uVESBpdQsb5npHjGeRt0AM9R04jKDJQ==
   /@npmcli/move-file/1.0.1:
     dependencies:
       mkdirp: 1.0.4
@@ -965,6 +976,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-QLPwirk+UPZNaLnMew9VludXA4CWUCenRewgEcGYwdzVgDPCDbXxy6vRJjmweZobMQv/oVLppT2JZtJFnPxX6g==
+  /@polymer/iron-icons/3.0.1:
+    dependencies:
+      '@polymer/iron-icon': 3.0.1
+      '@polymer/iron-iconset-svg': 3.0.1
+      '@polymer/polymer': 3.2.0
+    dev: false
+    resolution:
+      integrity: sha512-xtEI8erH2GIBiF3QxEMyW81XuVjguu6Le5WjEEpX67qd9z7jjmc4T/ke3zRUlnDydex9p8ytcwVpMIKcyvjYAQ==
   /@polymer/iron-iconset-svg/3.0.1:
     dependencies:
       '@polymer/iron-meta': 3.0.1
@@ -5968,6 +5987,10 @@ packages:
       node: '>=6.0.0'
     resolution:
       integrity: sha512-r46gZQZQV+Kl9oItvl1JZZqJKGr+oEkB08A6BzkiR7593/7IbtuncXHd2YoYeTsG4157ZssMu9KYvUHLcjcDoA==
+  /spinkit/2.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-oYBGY0GV1H1dX+ZdKnB6JVsYC1w/Xl20H111eb+WSS8nUYmlHgGb4y5buFSkzzceEeYYh5kMhXoAmoTpiQauiA==
   /split-string/3.1.0:
     dependencies:
       extend-shallow: 3.0.2
@@ -6869,7 +6892,9 @@ packages:
     resolution:
       integrity: sha512-HG/DWAJa1PAnHT9JAhNa8AbAv3FPaiLzioSjCcmuXXhP8MlpHO5vwls4g4j6n30Z74GVQj8Xa62dWVx1QCGklg==
 specifiers:
+  '@flowingcode/font-awesome-iron-iconset': 2.1.2
   '@polymer/iron-icon': 3.0.1
+  '@polymer/iron-icons': v3.0.1
   '@polymer/iron-list': 3.1.0
   '@polymer/polymer': 3.2.0
   '@types/validator': 10.11.3
@@ -6929,6 +6954,7 @@ specifiers:
   progress-webpack-plugin: 0.0.24
   raw-loader: 4.0.0
   script-ext-html-webpack-plugin: 2.1.4
+  spinkit: ^2.0.0
   terser: 4.6.7
   typescript: 3.8.3
   validator: 12.0.0

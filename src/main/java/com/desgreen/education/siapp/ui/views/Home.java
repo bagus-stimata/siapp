@@ -36,8 +36,6 @@ import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.FlexLayout.FlexDirection;
@@ -45,7 +43,6 @@ import com.vaadin.flow.component.orderedlayout.FlexLayout.FlexWrap;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import jdk.javadoc.internal.doclets.toolkit.taglets.SeeTaglet;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -263,7 +260,7 @@ public class Home extends ViewFrame {
 						.withHollow(HollowBuilder.get()
 								.withMargin(0.0)
 //								.withSize("70%")
-								.withSize("60%")
+								.withSize("55%")
 								.withBackground("#fff")
 								.withPosition(HollowPosition.front)
 								.withDropShadow(DropShadowBuilder.get()
@@ -288,13 +285,16 @@ public class Home extends ViewFrame {
 								.withName(NameBuilder.get()
 										.withOffsetY(-10.0)
 										.withShow(true)
-										.withColor("#888")
-										.withFontSize("17px")
+//										.withColor("#888")
+										.withColor("#2119bd")
+//										.withFontSize("17px")
+										.withFontSize("15px")
 										.build())
 								.withValue(ValueBuilder
 										.get()
 										.withColor("#111")
-										.withFontSize("36px")
+//										.withFontSize("36px")
+										.withFontSize("25px")
 										.withShow(true)
 										.build())
 								.build())
