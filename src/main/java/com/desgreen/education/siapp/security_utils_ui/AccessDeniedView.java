@@ -9,7 +9,8 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 import javax.servlet.http.HttpServletResponse;
 
 @Tag("access-denied-view")
-@JsModule("static/views/errors/access-denied-view.js")
+//@JsModule("static/views/errors/access-denied-view.js")
+@JsModule("./styles/shared-styles.js")
 //@ParentLayout(MainView.class) //Minta sesuatu
 @PageTitle("Access Denied")
 @Route

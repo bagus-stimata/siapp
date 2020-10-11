@@ -216,11 +216,12 @@
             <version>2.6.12</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.drewnoakes</groupId>
-            <artifactId>metadata-extractor</artifactId>
-            <version>2.7.2</version>
-        </dependency>
+        <!-- Image Utils -->        <dependency>
+        <groupId>com.drewnoakes</groupId>
+        <artifactId>metadata-extractor</artifactId>
+        <version>2.7.2</version>
+    </dependency>
+
 
 
         <!-- JASPER REPORT DEPENDENCY -->
@@ -263,11 +264,11 @@
 
         <!-- End Report UI -->
 
-        <dependency>
-            <groupId>org.eclipse.jdt.core.compiler</groupId>
-            <artifactId>ecj</artifactId>
-            <version>4.6.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.eclipse.jdt.core.compiler</groupId>-->
+<!--            <artifactId>ecj</artifactId>-->
+<!--            <version>4.6.1</version>-->
+<!--        </dependency>-->
 
         <!-- ApexChart -->
         <dependency>

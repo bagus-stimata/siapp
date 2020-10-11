@@ -242,8 +242,8 @@ public class CommonImageFactory {
             newWidth =  (int) (reduceScale * bufferedImageOri.getWidth());
             newHeight = (int) (reduceScale * bufferedImageOri.getHeight());
 
-            System.out.println("Ukuran: " + bufferedImageOri.getWidth() + " : " + bufferedImageOri.getWidth() +
-                    " >> " + reduceScale + " >> " + newWidth + " : " + newHeight);
+//            System.out.println("Ukuran: " + bufferedImageOri.getWidth() + " : " + bufferedImageOri.getWidth() +
+//                    " >> " + reduceScale + " >> " + newWidth + " : " + newHeight);
         }else {
             return bufferedImageOri;
         }

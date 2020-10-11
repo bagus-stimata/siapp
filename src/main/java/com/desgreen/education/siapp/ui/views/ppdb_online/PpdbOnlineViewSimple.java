@@ -21,8 +21,9 @@ import com.vaadin.flow.router.Route;
 
 @Route(value = "ppdb_online_")
 @PageTitle("ppdb_online_")
-@CssImport("styles/views/ppdb_online/ppdb_online-view.css")
-@JsModule("./styles/views/ppdb_online/shared-styles.js")
+//@CssImport("styles/views/ppdb_online/ppdb_online-view.css")
+//@JsModule("./styles/views/ppdb_online/shared-styles.js")
+@JsModule("./styles/shared-styles.js")
 public class PpdbOnlineViewSimple extends Div {
 
     private TextField firstName = new TextField();

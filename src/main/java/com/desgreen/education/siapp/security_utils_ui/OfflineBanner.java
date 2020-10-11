@@ -5,7 +5,8 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 
 @Tag("offline-banner")
-@JsModule("static/components/offline-banner.js")
+//@JsModule("static/components/offline-banner.js")
+@JsModule("./styles/shared-styles.js")
 //@NpmPackage(value="@polymer/iron-ajax", version = "3.0.1")
 public class OfflineBanner extends Component {
 

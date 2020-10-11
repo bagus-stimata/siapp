@@ -101,33 +101,38 @@ public class Home extends ViewFrame {
 				(x.getFperiodeBean().getDaftarOpenFrom().isBefore(LocalDate.now()) || x.getFperiodeBean().getDaftarOpenFrom().isEqual(LocalDate.now())) &&
 						(x.getFperiodeBean().getDaftarCloseTo().isAfter(LocalDate.now()) || x.getFperiodeBean().getDaftarCloseTo().isEqual(LocalDate.now()))
 			).sorted(Comparator.comparing(FKurikulum::getId).reversed()).collect(Collectors.toList())) {
-
 			double filledQuotaMale = (double) kurikulumBean.getFtKrsSet().stream().filter(x-> x.getFsiswaBean().isSex()==true && x.getEnumStatApproval().equals(EnumStatApproval.APPROVE)).count();
 			double filledQuotaFemale = (double) kurikulumBean.getFtKrsSet().stream().filter(x-> x.getFsiswaBean().isSex()==false && x.getEnumStatApproval().equals(EnumStatApproval.APPROVE)).count();
 
-			double persenMale = 0;
-			double persenFemale = 0;
-			try {
-				persenMale = filledQuotaMale/(double) kurikulumBean.getKuotaMale() * 100.0;
-			}catch (Exception ex){}
-			try {
-				persenFemale = filledQuotaFemale/(double) kurikulumBean.getKuotaFemale() * 100.0;
-			}catch (Exception ex){}
+			if (filledQuotaMale > 0 || filledQuotaMale>0) {
+				double persenMale = 0;
+				double persenFemale = 0;
+				try {
+					persenMale = filledQuotaMale / (double) kurikulumBean.getKuotaMale() * 100.0;
+				} catch (Exception ex) {
+				}
+				try {
+					persenFemale = filledQuotaFemale / (double) kurikulumBean.getKuotaFemale() * 100.0;
+				} catch (Exception ex) {
+				}
 
-			int periodeYear = kurikulumBean.getFperiodeBean().getPeriodeFrom().getYear();
-			String title = kurikulumBean.getDescription()  + " (" + periodeYear + ")".toUpperCase() + " ";
-			title += "Quota L= " + (kurikulumBean.getKuotaMale()) + ", P= " + kurikulumBean.getKuotaFemale();
+				int periodeYear = kurikulumBean.getFperiodeBean().getPeriodeFrom().getYear();
+				String title = kurikulumBean.getDescription() + " (" + periodeYear + ")".toUpperCase() + " ";
+				title += "Quota L= " + (kurikulumBean.getKuotaMale()) + ", P= " + kurikulumBean.getKuotaFemale();
 
-//			ApexCharts chart1 = multiRadialBarChartExample(BigDecimal.valueOf(persenMale).setScale(2, RoundingMode.HALF_DOWN).doubleValue(),
-//					BigDecimal.valueOf(persenFemale).setScale(2, RoundingMode.HALF_DOWN).doubleValue(), kurikulumBean.getDescription());
-			ApexCharts chart1 = gradientRadialBarChartExample(BigDecimal.valueOf(persenMale).setScale(2, RoundingMode.HALF_DOWN).doubleValue(),
-					BigDecimal.valueOf(persenFemale).setScale(2, RoundingMode.HALF_DOWN).doubleValue(),
-					(int) filledQuotaMale, (int) filledQuotaFemale,
-					title);
-			content.add(chart1);
+				try {
+					ApexCharts chart1 = gradientRadialBarChartExample(BigDecimal.valueOf(persenMale).setScale(2, RoundingMode.HALF_DOWN).doubleValue(),
+							BigDecimal.valueOf(persenFemale).setScale(2, RoundingMode.HALF_DOWN).doubleValue(),
+							(int) filledQuotaMale, (int) filledQuotaFemale,
+							title);
+					content.add(chart1);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 
-			counter++;
-			if (counter==max) break;
+				counter++;
+				if (counter == max) break;
+			}
 		}
 		content.setFlexDirection(FlexDirection.ROW);
 //		content.setMargin(Horizontal.AUTO);

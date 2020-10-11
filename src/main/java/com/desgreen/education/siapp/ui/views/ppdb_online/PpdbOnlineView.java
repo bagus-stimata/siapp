@@ -28,6 +28,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -68,6 +69,7 @@ import java.util.Locale;
 @SpringComponent
 @Route(value = "PpdbOnlineView", layout = MainLayout.class)
 @PageTitle("PpdbOnlineView")
+@JsModule("./styles/shared-styles.js")
 public class PpdbOnlineView extends SplitViewFrame implements HasUrlParameter<Long> {
 
 	protected PpdbOnlineModel model;

@@ -177,6 +177,7 @@ public class MainLayout extends FlexBoxLayout
 		NaviItem menuPoskestren = menu.addNaviItem(VaadinIcon.STETHOSCOPE, "Poskestren",
 				KompBiayaView.class);
 			menu.addNaviItem(menuPoskestren, "Pemeriksaan", KompBiayaView.class);
+			menu.addNaviItem(menuPoskestren, "Pemeriksaan Perbaikan", KompBiayaView.class);
 
 
 		NaviItem menuDonasi = menu.addNaviItem(VaadinIcon.DIAMOND, "Donasi & Penggunaan",
@@ -199,6 +200,7 @@ public class MainLayout extends FlexBoxLayout
 				boolean matches = ((NaviItem) naviItem).getText().toLowerCase().contains("home") ||
 						((NaviItem) naviItem).getText().toLowerCase().contains("poskestren") ||
 						((NaviItem) naviItem).getText().toLowerCase().contains("pemeriksaan") ||
+						((NaviItem) naviItem).getText().toLowerCase().contains("pemeriksaan Perbaikan") ||
 						((NaviItem) naviItem).getText().toLowerCase().contains("pendaftaran") ||
 						((NaviItem) naviItem).getText().toLowerCase().contains("ppdb/krs") ||
 						((NaviItem) naviItem).getText().toLowerCase().contains("validasi ppdb/krs") ||
