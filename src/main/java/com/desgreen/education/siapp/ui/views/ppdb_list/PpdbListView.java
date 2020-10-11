@@ -21,6 +21,7 @@ import com.desgreen.education.siapp.ui.util.LumoStyles;
 import com.desgreen.education.siapp.ui.util.TextColor;
 import com.desgreen.education.siapp.ui.util.UIUtils;
 import com.desgreen.education.siapp.ui.util.css.BoxSizing;
+import com.desgreen.education.siapp.ui.utils.common.CommonDateFormat;
 import com.desgreen.education.siapp.ui.views.SplitViewFrame;
 import com.desgreen.education.siapp.ui.views.ppdb_selectmatkul.PpdbSelectMatkulView;
 import com.desgreen.education.siapp.ui.utils.common.CommonFileFactory;
@@ -47,6 +48,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -111,10 +113,10 @@ public class PpdbListView extends SplitViewFrame {
 
 
 		setViewContent(createContent());
-		setViewDetails(createDetailsDrawer());
+//		setViewDetails(createDetailsDrawer());
 
 
-		filter();
+//		filter();
 		binder.readBean(new FKurikulum());
 
 	}
@@ -125,7 +127,7 @@ public class PpdbListView extends SplitViewFrame {
 
 		appBar.setNaviMode(AppBar.NaviMode.MENU);
 //		appBar.getContextIcon().addClickListener(e -> UI.getCurrent().navigate(Accounts.class));
-		appBar.setTitle( "PPDB ONLINE #" + AppPublicService.APP_DESC2 );
+		appBar.setTitle( "PENDAFTARAN ONLINE #" + AppPublicService.APP_DESC2 );
 	}
 	private Component createContent() {
 		FlexBoxLayout content = new FlexBoxLayout(createGrid());
@@ -285,8 +287,11 @@ public class PpdbListView extends SplitViewFrame {
 		String periodeEnd = "End: ";
 
 		if (fKurikulum.getFperiodeBean() !=null) {
-			periodeStart += UIUtils.formatDate_ddMMMYYYY(fKurikulum.getFperiodeBean().getPeriodeFrom());
-			periodeEnd += UIUtils.formatDate_ddMMMYYYY(fKurikulum.getFperiodeBean().getPeriodeTo());
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+//			periodeStart += UIUtils.formatDate_ddMMMYYYY(fKurikulum.getFperiodeBean().getPeriodeFrom());
+//			periodeEnd += UIUtils.formatDate_ddMMMYYYY(fKurikulum.getFperiodeBean().getPeriodeTo());
+			periodeStart += sdf.format(CommonDateFormat.fromLocalDate(fKurikulum.getFperiodeBean().getPeriodeFrom()));
+			periodeEnd += sdf.format(CommonDateFormat.fromLocalDate(fKurikulum.getFperiodeBean().getPeriodeTo()));
 		}
 
 		ListItem item = new ListItem(periodeStart, periodeEnd);

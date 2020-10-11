@@ -49,14 +49,13 @@ public class PpdbListModel {
         this.appPublicService = appPublicService;
 
         this.fKurikulumJPARepository = appPublicService.fKurikulumJPARepository;
-        this.ftKrsJPARepository = appPublicService.ftKrsJPARepository;
-        this.fSiswaJPARepository = appPublicService.fSiswaJPARepository;
+//        this.ftKrsJPARepository = appPublicService.ftKrsJPARepository;
+//        this.fSiswaJPARepository = appPublicService.fSiswaJPARepository;
 
-        this.fDivisionJPARepository = appPublicService.fDivisionJPARepository;
-        this.fPeriodeJPARepository = appPublicService.fPeriodeJPARepository;
-        this.fMatPelJPARepository = appPublicService.fMatPelJPARepository;
+//        this.fDivisionJPARepository = appPublicService.fDivisionJPARepository;
+//        this.fMatPelJPARepository = appPublicService.fMatPelJPARepository;
 
-        userActive = authUserDetailsService.getUserDetail(SecurityUtils.getUsername());
+//        userActive = authUserDetailsService.getUserDetail(SecurityUtils.getUsername());
 
         initVariable();
         initVariableData();
@@ -70,6 +69,14 @@ public class PpdbListModel {
     }
 
     protected void reloadListHeader(){
+        for (FKurikulum domain : fKurikulumJPARepository.findAllActive().stream().filter(x ->
+                (x.getFperiodeBean().getDaftarOpenFrom().isBefore(LocalDate.now()) || x.getFperiodeBean().getDaftarOpenFrom().isEqual(LocalDate.now())) &&
+                        (x.getFperiodeBean().getDaftarCloseTo().isAfter(LocalDate.now()) || x.getFperiodeBean().getDaftarCloseTo().isEqual(LocalDate.now()))
+             ).collect(Collectors.toList())) {
+            mapHeader.put(domain.getId(), domain);
+        }
+    }
+    protected void reloadListHeaderX(){
         if (userActive !=null) {
             try {
                 currentFSiswa = fSiswaJPARepository.findById(userActive.getIdSiswa()).get();

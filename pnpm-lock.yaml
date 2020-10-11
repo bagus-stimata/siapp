@@ -50,7 +50,7 @@ dependencies:
   apexcharts: 3.20.2
   lit-element: 2.3.1
   onecolor: 3.1.0
-  open: 7.2.1
+  open: 7.3.0
   spinkit: 2.0.1
 devDependencies:
   '@types/validator': 10.11.3
@@ -4975,7 +4975,7 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha1-BnQoIw/WdEOyeUsiu6UotoZ5YtQ=
-  /open/7.2.1:
+  /open/7.3.0:
     dependencies:
       is-docker: 2.1.1
       is-wsl: 2.2.0
@@ -4983,7 +4983,7 @@ packages:
     engines:
       node: '>=8'
     resolution:
-      integrity: sha512-xbYCJib4spUdmcs0g/2mK1nKo/jO2T7INClWd/beL7PFkXRWgr8B23ssDHX/USPn2M2IjDR5UdpYs6I67SnTSA==
+      integrity: sha512-mgLwQIx2F/ye9SmbrUkurZCnkoXyXyu9EbHtJZrICjVAJfyMArdHp3KkixGdZx1ZHFPNIwl0DDM1dFFqXbTLZw==
   /opn/5.5.0:
     dependencies:
       is-wsl: 1.1.0

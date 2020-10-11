@@ -19,17 +19,17 @@ public class PpdbListController implements PpdbListListener {
     @Override
     public void valueChangeListenerSearch(HasValue.ValueChangeEvent e) {
         if (e !=null) {
-            view.setFilter(e.getValue().toString());
+//            view.setFilter(e.getValue().toString());
         }
     }
 
     @Override
     public void aksiBtnReloadFromDb() {
-        view.grid.deselectAll();
-        model.initVariableData();
-        view.dataProvider = DataProvider.ofCollection(model.mapHeader.values());
-        view.dataProvider.refreshAll();
-        view.grid.setDataProvider(view.dataProvider);
+//        view.grid.deselectAll();
+//        model.initVariableData();
+//        view.dataProvider = DataProvider.ofCollection(model.mapHeader.values());
+//        view.dataProvider.refreshAll();
+//        view.grid.setDataProvider(view.dataProvider);
     }
 
     @Override

@@ -55,7 +55,7 @@ public class PpdbOnlineModel {
     }
 
     protected void initVariableData(){
-        reloadListHeader();
+//        reloadListHeader();
     }
 
     protected void reloadListHeader(){

@@ -48,13 +48,13 @@
     "lit-element": "2.3.1",
     "@vaadin/vaadin-date-time-picker": "1.3.0",
     "@vaadin/form": "./target/flow-frontend/form",
-    "@vaadin-component-factory/vcf-toggle-button": "1.0.1",
-    "open": "^7.2.1",
-    "apexcharts": "3.20.2",
-    "onecolor": "3.1.0",
     "@polymer/iron-icons": "v3.0.1",
     "spinkit": "^2.0.0",
-    "@flowingcode/font-awesome-iron-iconset": "2.1.2"
+    "@vaadin-component-factory/vcf-toggle-button": "1.0.1",
+    "apexcharts": "3.20.2",
+    "onecolor": "3.1.0",
+    "@flowingcode/font-awesome-iron-iconset": "2.1.2",
+    "open": "^7.2.1"
   },
   "devDependencies": {
     "webpack": "4.42.0",
